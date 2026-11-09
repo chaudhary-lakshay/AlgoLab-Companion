@@ -14,6 +14,10 @@ The notebook retains a light paper-style editor with line numbers, distinct colo
 
 All layouts share one URL and preserve the existing `algolab-companion-drafts-v1` local-storage format so updating the website does not erase drafts. Ctrl+S / Cmd+S saves from the editor or title field.
 
+## Pinned draft actions
+
+On desktop, Export .TXT, Import .TXT, Insert example, and Delete draft are pinned to the bottom of the left Case Files sidebar; the draft list scrolls independently when long. The right Writing Tools panel is dedicated to searchable keywords without repetitive notices. On phones and tablets, these actions remain in the Quick Tools drawer. The note format and local-storage key remain unchanged.
+
 ## Features
 
 - Plain-text pseudocode editor with keyword coloring in supported browsers and fallback on older ones
