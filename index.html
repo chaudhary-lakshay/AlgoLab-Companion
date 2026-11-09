@@ -363,39 +363,47 @@
       .editor-shell { min-height: 230px; }
     }
 
-    /* Editor v4: dark, code-editor writing surface inside the case-file shell. */
-    .editor-topbar { display: -webkit-box; display: -ms-flexbox; display: flex; align-items: stretch; min-height: 39px; overflow: hidden; margin: 0; background: #242731; border: 1px solid #3f414b; border-bottom: 0; }
-    .editor-tabs { display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-flex: 1; -ms-flex: 1; flex: 1; min-width: 0; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: #686775 #242731; }
-    .file-tab { flex: 0 0 auto; max-width: 195px; min-width: 112px; min-height: 39px; padding: 0 13px; border: 0; border-right: 1px solid #3d4049; border-top: 2px solid transparent; border-radius: 0; background: #272a33; color: #adb3c0; text-align: left; font: 12px/36px Consolas, 'Courier New', monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .file-tab.is-active { background: #15171d; border-top-color: #d88367; color: #f0ede8; }
-    .file-tab:hover { background: #363b46; color: #f6f6f7; }
-    .file-new { flex: 0 0 40px; min-height: 39px; background: #282d36; color: #c6cbd4; font: 21px/1 monospace; border: 0; border-right: 1px solid #3e424d; }
-    .file-new:hover { color: #fff; background: #3a4050; }
-    .editor-language { flex: 0 0 auto; display: none; align-items: center; padding: 0 14px; font: 10px 'Courier New', monospace; color: #929bab; letter-spacing: 1.1px; }
-    .editor-shell { margin-top: 0; border: 1px solid #393c46; background: #15171e; color: #d9deea; box-shadow: none; }
+    /* Editor tabs and readable syntax colors, retaining the daylight case-file palette. */
+    .editor-topbar { display: -webkit-box; display: -ms-flexbox; display: flex; align-items: stretch; min-height: 39px; overflow: hidden; margin: 0; background: #ece7dc; border: 1px solid #c9bfb0; border-bottom: 0; }
+    .editor-tabs { display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-flex: 1; -ms-flex: 1; flex: 1; min-width: 0; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: #c7b9a8 #ece7dc; }
+    .file-tab { flex: 0 0 auto; max-width: 195px; min-width: 112px; min-height: 39px; padding: 0 13px; border: 0; border-right: 1px solid #d5cabc; border-top: 2px solid transparent; border-radius: 0; background: #ece7dc; color: #635e57; text-align: left; font: 12px/36px Consolas, 'Courier New', monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .file-tab.is-active { background: #fffdf7; border-top-color: #ac4d3d; color: #282e2b; font-weight: bold; }
+    .file-tab:hover { background: #e2daca; color: #292d29; }
+    .file-tab.is-active:hover { background: #fffdf7; }
+    .file-new { flex: 0 0 40px; min-height: 39px; background: #ece7dc; color: #595c54; font: 21px/1 monospace; border: 0; border-right: 1px solid #d5cabc; }
+    .file-new:hover { color: #a14337; background: #e2daca; }
+    .editor-language { flex: 0 0 auto; display: none; align-items: center; padding: 0 14px; font: 10px 'Courier New', monospace; color: #7c786e; letter-spacing: 1.1px; }
+    .editor-shell { margin-top: 0; border: 1px solid #c5bcaf; background: #fffdfa; color: #28332f; box-shadow: none; }
     .editor-shell:before { display: none; }
-    .editor-shell:focus-within { border-color: #647a9c; box-shadow: 0 0 0 1px rgba(100,122,156,.24); }
-    #editor, #highlight { left: 54px; top: 0; width: calc(100% - 54px); height: 100%; padding: 19px 20px; font: 16px/27px Consolas, 'Cascadia Code', 'Courier New', monospace; color: #d8ddeb; white-space: pre; word-break: normal; word-wrap: normal; overflow-wrap: normal; tab-size: 2; -moz-tab-size: 2; }
-    #editor { background: transparent; color: #d8ddeb; caret-color: #ffdb9e; }
-    #editor::placeholder { color: #717a89; }
-    .enhanced #editor { color: transparent; -webkit-text-fill-color: transparent; caret-color: #ffdb9e; }
-    .enhanced #highlight { color: #d8ddeb; }
-    .tok-key { font-weight: 500; color: #8cc7ff; }
-    .tok-num { color: #c6a7ef; }
-    .tok-comment { color: #829383; font-style: italic; }
-    .tok-string { color: #e1b48c; }
-    .tok-op { color: #e1b5db; }
-    .editor-gutter { display: block; position: absolute; left: 0; top: 0; bottom: 0; z-index: 1; width: 53px; margin: 0; overflow: hidden; padding: 19px 12px 19px 2px; border-right: 1px solid #292e39; background: #1b1e27; color: #6d7586; font: 16px/27px Consolas, 'Cascadia Code', 'Courier New', monospace; text-align: right; white-space: pre; pointer-events: none; user-select: none; }
-    .editor-footer { margin: 0; padding: 7px 12px; background: #252936; color: #b7c3d2; border: 1px solid #393c46; border-top: 0; font: 11px/1.5 Consolas, 'Courier New', monospace; }
-    .editor-footer #lineCount { color: #c9d7e9; }
-    .editor-footer .edit-mode { color: #94b8d5; }
+    .editor-shell:focus-within { border-color: #a86450; box-shadow: 0 0 0 1px rgba(159,71,55,.14); }
+    #editor, #highlight { left: 54px; top: 0; width: calc(100% - 54px); height: 100%; padding: 19px 20px; font: 16px/27px Consolas, 'Cascadia Code', 'Courier New', monospace; color: #29312f; white-space: pre; word-break: normal; word-wrap: normal; overflow-wrap: normal; tab-size: 2; -moz-tab-size: 2; }
+    #editor { background: transparent; color: #29312f; caret-color: #252f2d; }
+    #editor::placeholder { color: #9d998e; }
+    .enhanced #editor { color: transparent; -webkit-text-fill-color: transparent; caret-color: #252f2d; }
+    .enhanced #highlight { color: #29312f; }
+    .tok-key { font-weight: bold; color: #913e34; }
+    .tok-io { font-weight: bold; color: #225f9b; }
+    .tok-output { font-weight: bold; color: #16704b; }
+    .tok-assign { font-weight: bold; color: #a45123; }
+    .tok-branch { font-weight: bold; color: #784298; }
+    .tok-loop { font-weight: bold; color: #0f7377; }
+    .tok-fn { font-weight: bold; color: #a03c4b; }
+    .tok-structure { font-weight: bold; color: #576b34; }
+    .tok-num { color: #8a4b9e; }
+    .tok-comment { color: #787c71; font-style: italic; }
+    .tok-string { color: #197443; }
+    .tok-op { color: #7a5966; }
+    .editor-gutter { display: block; position: absolute; left: 0; top: 0; bottom: 0; z-index: 1; width: 53px; margin: 0; overflow: hidden; padding: 19px 12px 19px 2px; border-right: 1px solid #e0d8cd; background: #f4f0e8; color: #9b9185; font: 16px/27px Consolas, 'Cascadia Code', 'Courier New', monospace; text-align: right; white-space: pre; pointer-events: none; user-select: none; }
+    .editor-footer { margin: 0; padding: 7px 12px; background: #f1ede5; color: #686e67; border: 1px solid #c5bcaf; border-top: 0; font: 11px/1.5 Consolas, 'Courier New', monospace; }
+    .editor-footer #lineCount { color: #434f49; }
+    .editor-footer .edit-mode { color: #65736a; }
     .editor-footer > span:last-child { text-align: right; }
-    .editor-topbar button:focus-visible { outline: 2px solid #edb899; outline-offset: -2px; }
+    .editor-topbar button:focus-visible { outline: 2px solid #ac4d3d; outline-offset: -2px; }
     @media (min-width: 1180px) {
       .editor-language { display: -webkit-box; display: -ms-flexbox; display: flex; }
       #notebook .editor-topbar { flex: 0 0 auto; margin-top: 3px; }
       #notebook .editor-footer { flex: 0 0 auto; padding: 7px 15px; }
-      #notebook .editor-shell { border-radius: 0; min-height: 200px; background: #15171e; }
+      #notebook .editor-shell { border-radius: 0; min-height: 200px; background: #fffdfa; }
       #notebook #editor, #notebook #highlight { padding: 20px 20px; font: 17px/28px Consolas, 'Cascadia Code', 'Courier New', monospace; }
       #notebook .editor-gutter { padding-top: 20px; font: 17px/28px Consolas, 'Cascadia Code', 'Courier New', monospace; }
     }
@@ -756,6 +764,18 @@ STOP</pre>
     showSuggestions();
     if (savingWorks) statusText('Saved on this device', false);
   }
+  // Distinct keyword families, independent of the selected quick-insert category.
+  function keywordTone(word) {
+    var token = word.toUpperCase().replace(/[ \t]+/g, ' ');
+    if (/^(READ|INPUT)$/.test(token)) return 'tok-io';
+    if (/^(PRINT|DISPLAY|OUTPUT)$/.test(token)) return 'tok-output';
+    if (/^(SET|SWAP)$/.test(token)) return 'tok-assign';
+    if (/^(IF|ELSE IF|ELSE|END IF|THEN|AND|OR|NOT|TRUE|FALSE)$/.test(token)) return 'tok-branch';
+    if (/^(FOR|FROM|TO|STEP|END FOR|WHILE|DO|END WHILE|REPEAT|UNTIL|BREAK|CONTINUE)$/.test(token)) return 'tok-loop';
+    if (/^(FUNCTION|END FUNCTION|PROCEDURE|END PROCEDURE|CALL|RETURN)$/.test(token)) return 'tok-fn';
+    if (/^(ARRAY|LIST|STACK|QUEUE|PUSH|POP|PEEK|ENQUEUE|DEQUEUE|INSERT|DELETE|LENGTH|SIZE|INDEX|VISIT)$/.test(token)) return 'tok-structure';
+    return 'tok-key';
+  }
   function colorize(s) {
     var output = '';
     var pattern = keywordPattern;
@@ -764,7 +784,7 @@ STOP</pre>
     var match;
     while ((match = pattern.exec(s)) !== null) {
       output += escapeHtml(s.slice(last, match.index));
-      output += '<span class="' + (match[1] ? 'tok-comment' : match[2] ? 'tok-string' : match[3] ? 'tok-key' : match[4] ? 'tok-num' : 'tok-op') + '">' + escapeHtml(match[0]) + '</span>';
+      output += '<span class="' + (match[1] ? 'tok-comment' : match[2] ? 'tok-string' : match[3] ? keywordTone(match[3]) : match[4] ? 'tok-num' : 'tok-op') + '">' + escapeHtml(match[0]) + '</span>';
       last = match.index + match[0].length;
     }
     output += escapeHtml(s.slice(last));
