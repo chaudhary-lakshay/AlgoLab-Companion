@@ -93,6 +93,115 @@
       .editor-shell { min-height: 275px; height: 42vh; }
       #editor, #highlight { font-size: 14px; line-height: 24px; }
     }
+
+    /* Responsive case-file workspace: a single URL for desktop, tablet and phone. */
+    :root { --paper: #f5f1e8; --paper-deep: #ebe6da; --ink: #282c2b; --red: #9e4235; --rule: #cfc6b6; }
+    .masthead { position: relative; }
+    .masthead:after { content: 'ALGORITHM STUDY / PERSONAL ARCHIVE'; display: none; color: #837a6b; font: bold 10px/1.5 'Courier New', monospace; letter-spacing: 1.1px; }
+    .workspace { min-width: 0; }
+    .library-panel { display: none; }
+    .library-top { display: -webkit-box; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+    .library-heading { margin: 4px 0 0; font: bold 22px/1.15 Georgia, serif; }
+    .library-search { width: 100%; margin-bottom: 9px; height: 43px; background: #fdfbf6; }
+    .library-count { font: 10px/1.5 'Courier New', monospace; letter-spacing: .5px; color: #79736c; margin: 0 0 10px; }
+    .library-list { min-height: 95px; }
+    .library-item { display: block; width: 100%; padding: 12px 10px; margin: 0 0 7px; border: 1px solid #d0c8ba; border-left: 3px solid transparent; background: #f7f3eb; text-align: left; color: #383d38; }
+    .library-item:hover { background: #fffaf1; border-color: #bba998; }
+    .library-item.is-current { border-left-color: var(--red); background: #fffcf4; border-top-color: #8d877c; border-right-color: #8d877c; border-bottom-color: #8d877c; }
+    .library-item-title { display: block; font: bold 13px/1.3 Georgia, serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .library-item-preview { display: block; color: #77756d; font: 11px/1.45 'Courier New', monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 6px; }
+    .library-empty { color: #686a64; font-size: 12px; padding: 12px 2px; line-height: 1.5; }
+    .library-foot { border-top: 1px dashed #b9ae9c; margin-top: 18px; padding-top: 14px; color: #6f6f67; font: 11px/1.6 'Courier New', monospace; }
+    .library-foot strong { color: #9e4235; }
+    .desk-kicker { display: none; }
+    .desktop-shortcut { display: none; }
+    .tab:focus-visible, .small-btn:focus-visible, .action:focus-visible, .chip:focus-visible, .library-item:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+    .editor-shell:focus-within { border-color: #9e4235; box-shadow: 0 0 0 2px rgba(158,66,53,.12); }
+    .footer { clear: both; }
+    @media (min-width: 760px) and (max-width: 1179px) {
+      .page { max-width: 940px; }
+      .content { padding: 26px 28px 35px; }
+      .masthead { padding: 23px 28px 19px; }
+      .brand { font-size: 33px; }
+      .editor-shell { min-height: 460px; height: 58vh; }
+      #editor, #highlight { font-size: 16px; line-height: 27px; }
+    }
+    @media (min-width: 1180px) {
+      html, body { background: #ded8cb; }
+      body { background-image: repeating-linear-gradient(90deg, transparent 0, transparent 59px, rgba(55,48,39,.025) 60px); }
+      .page { max-width: 1660px; width: calc(100% - 40px); margin: 20px auto; min-height: calc(100vh - 40px); border: 1px solid #bfb6a6; box-shadow: 0 12px 55px rgba(50,45,38,.12); }
+      .masthead { padding: 18px 31px 17px; border-top-width: 6px; }
+      .masthead-row { max-width: none; }
+      .masthead:after { display: block; position: absolute; right: 104px; top: 46px; }
+      .brand { font-size: 35px; }
+      .subhead { margin-top: 7px; }
+      .tabs { display: none; }
+      .workspace { display: grid; grid-template-columns: 252px minmax(0,1fr) 347px; align-items: start; min-height: calc(100vh - 195px); }
+      .library-panel { display: block; min-width: 0; position: sticky; top: 0; max-height: calc(100vh - 45px); overflow-y: auto; padding: 27px 17px 24px; border-right: 1px solid #c8bdab; background: #eee8dc; }
+      .library-top { flex-wrap: wrap; }
+      .library-top .small-btn { width: 100%; background: #333a35; color: #fff9ed; border-color: #333a35; }
+      .workspace > .content { min-width: 0; padding: 28px 34px 32px; }
+      #notebook { border-right: 1px solid #d2c5b3; }
+      #notebook.hidden, #reference.hidden { display: block !important; }
+      #reference { position: sticky; top: 0; height: calc(100vh - 45px); max-height: 1100px; overflow-y: auto; background: #f1ece1; }
+      #reference .section-title { font-size: 23px; margin-bottom: 9px; }
+      #reference .reference-intro { font-size: 12px; }
+      #reference .shape { width: 84px; min-width: 84px; height: 54px; margin-right: 10px; }
+      #reference .ref-row { padding: 9px 0; }
+      #reference .ref-info p { font-size: 11px; }
+      #reference .ref-info strong { font-size: 12px; }
+      #reference .keyword-table td { font-size: 11px; }
+      #reference .keyword-table th { font-size: 10px; }
+      #backToNotebook { display: none; }
+      .desk-kicker { display: block; color: #777169; font: 11px/1.5 'Courier New', monospace; margin: -3px 0 23px; }
+      .note-picker { display: none; }
+      .section-title { font-size: 29px; }
+      .note-name { margin-bottom: 19px; }
+      .editor-shell { min-height: 460px; height: min(65vh, 780px); max-height: none; }
+      #editor, #highlight { font-size: 16px; line-height: 28px; padding: 22px 22px 22px 26px; }
+      .desktop-shortcut { display: inline; color: #79756d; font: 11px 'Courier New', monospace; }
+      .actions { gap: 7px; }
+      .action { margin: 0; }
+      .footer { padding: 12px 30px; }
+    }
+    @media (min-width: 1400px) {
+      .workspace { grid-template-columns: 275px minmax(0,1fr) 370px; }
+      .workspace > .content { padding-left: 40px; padding-right: 40px; }
+    }
+    @media (max-width: 599px) {
+      .page { max-width: none; border: 0; }
+      .masthead { padding: 13px 15px 12px; }
+      .eyebrow { font-size: 9px; letter-spacing: 1.3px; }
+      .brand { font-size: 27px; }
+      .seal { padding: 4px 5px; font-size: 9px; }
+      .subhead { font-size: 10px; margin-top: 6px; }
+      .tabs { position: sticky; top: 0; z-index: 20; }
+      .tab { min-height: 48px; font-size: 11px; letter-spacing: .4px; }
+      .content { padding: 17px 15px 29px; }
+      .section-title { font-size: 25px; }
+      .note-picker { margin-bottom: 13px; }
+      .note-picker button { padding: 8px 10px; }
+      .editor-shell { height: 52vh; min-height: 330px; max-height: 630px; }
+      #editor, #highlight { font-size: 16px; line-height: 26px; padding: 14px 11px 14px 17px; }
+      .line-note { font-size: 10px; }
+      .chip-row { display: -webkit-box; display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 6px; white-space: nowrap; }
+      .chip { -webkit-box-flex: 0; flex: 0 0 auto; min-height: 42px; margin: 0 6px 0 0; }
+      .actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+      .action { width: 100%; min-height: 48px; margin: 0; padding: 8px 6px; font-size: 11px; }
+      .ref-row { padding: 12px 0; }
+      .shape { width: 88px; min-width: 88px; margin-right: 12px; }
+      .footer { padding: 16px 15px 20px; font-size: 9px; }
+      input[type=text], select { font-size: 16px; }
+    }
+    @media (max-width: 350px) {
+      .content { padding-left: 11px; padding-right: 11px; }
+      .brand { font-size: 24px; }
+      .seal { font-size: 8px; }
+      .tab { font-size: 10px; }
+      .shape { width: 72px; min-width: 72px; margin-right: 7px; }
+      .ref-info p { font-size: 11px; }
+      .action { font-size: 10px; }
+    }
   </style>
 </head>
 <body>
@@ -111,10 +220,19 @@
     <button type="button" class="tab" data-target="reference" aria-selected="false">02 / REFERENCE</button>
   </nav>
 
-  <main>
+  <main class="workspace">
+    <aside class="library-panel" aria-label="Your saved drafts">
+      <div class="library-top"><div><span class="section-code">Index / 01</span><h2 class="library-heading">Case files</h2></div><button type="button" id="newNoteDesktop" class="small-btn">+ New draft</button></div>
+      <label for="librarySearch" class="field-label">Find a problem</label>
+      <input type="text" id="librarySearch" class="library-search" placeholder="Search saved notes" autocomplete="off">
+      <p id="libraryCount" class="library-count">Drafts on this device</p>
+      <div id="libraryList" class="library-list" role="group" aria-label="Select a draft"></div>
+      <div class="library-foot"><strong>LOCAL ARCHIVE</strong><br>These notes belong to this browser. Export .TXT to back up or move them.</div>
+    </aside>
     <section id="notebook" class="content">
       <span class="section-code">File No. 01 — Working notes</span>
       <h2 class="section-title">Pseudocode notebook</h2>
+      <p class="desk-kicker">WRITE THE LOGIC FIRST. THE JAVA IMPLEMENTATION COMES LATER.</p>
       <div class="note-picker">
         <div class="picker-fill">
           <label for="noteSelect" class="field-label">Saved drafts on this device</label>
@@ -128,7 +246,7 @@
       </div>
       <div class="editor-heading">
         <label for="editor" class="field-label" style="margin:0">Working area</label>
-        <span id="saveStatus" class="status" aria-live="polite">Stored on this device</span>
+        <span><span class="desktop-shortcut">CTRL+S TO SAVE &nbsp; · &nbsp; </span><span id="saveStatus" class="status" aria-live="polite">Stored on this device</span></span>
       </div>
       <div id="editorShell" class="editor-shell">
         <pre id="highlight" aria-hidden="true"></pre>
@@ -229,6 +347,8 @@ STOP</pre>
   var suggest = document.getElementById('suggestions');
   var timer = null;
   var savingWorks = true;
+  var searchBox = el('librarySearch');
+  var libraryList = el('libraryList');
   var data;
 
   function el(id) { return document.getElementById(id); }
@@ -280,6 +400,41 @@ STOP</pre>
     }
     select.value = oldId;
   }
+
+  function renderLibrary() {
+    if (!libraryList) return;
+    var query = searchBox.value.toLowerCase().replace(/^\s+|\s+$/g, '');
+    var items = data.notes.slice().sort(function (a, b) { return b.updated - a.updated; });
+    while (libraryList.firstChild) libraryList.removeChild(libraryList.firstChild);
+    var shown = 0;
+    for (var i = 0; i < items.length; i++) {
+      var note = items[i];
+      if (query && (note.title + ' ' + note.body).toLowerCase().indexOf(query) === -1) continue;
+      shown++;
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'library-item' + (note.id === data.active ? ' is-current' : '');
+      button.setAttribute('aria-pressed', note.id === data.active ? 'true' : 'false');
+      var heading = document.createElement('span');
+      heading.className = 'library-item-title';
+      heading.textContent = note.title || 'Untitled algorithm';
+      var preview = document.createElement('span');
+      preview.className = 'library-item-preview';
+      preview.textContent = note.body.replace(/\s+/g, ' ').slice(0, 85) || 'Empty draft';
+      button.appendChild(heading); button.appendChild(preview);
+      button.onclick = (function (id) { return function () {
+        if (id === data.active) return;
+        saveNow(); data.active = id; render(); saveNow();
+      }; })(note.id);
+      libraryList.appendChild(button);
+    }
+    el('libraryCount').textContent = shown + ' / ' + data.notes.length + ' saved drafts';
+    if (!shown) {
+      var empty = document.createElement('p'); empty.className = 'library-empty';
+      empty.textContent = 'No matching notes. Try another search.';
+      libraryList.appendChild(empty);
+    }
+  }
   function lineCount() {
     var n = editor.value.split('\n').length;
     el('lineCount').textContent = n + (n === 1 ? ' line' : ' lines');
@@ -289,6 +444,7 @@ STOP</pre>
     title.value = n.title;
     editor.value = n.body;
     refreshSelect();
+    renderLibrary();
     syncHighlight();
     lineCount();
     showSuggestions();
@@ -322,6 +478,7 @@ STOP</pre>
     lineCount();
     scheduleSave();
     showSuggestions();
+    renderLibrary();
   }
   function cursorWord() {
     var caret = typeof editor.selectionStart === 'number' ? editor.selectionStart : editor.value.length;
@@ -372,6 +529,10 @@ STOP</pre>
   editor.onscroll = function () { overlay.scrollTop = editor.scrollTop; overlay.scrollLeft = editor.scrollLeft; };
   editor.onkeydown = function (e) {
     e = e || window.event;
+    if ((e.ctrlKey || e.metaKey) && e.keyCode === 83) {
+      if (e.preventDefault) e.preventDefault(); else e.returnValue = false;
+      saveNow(); return;
+    }
     if (e.keyCode === 9) { // Tab inserts spaces on desktop; no IDE behavior.
       if (e.preventDefault) e.preventDefault(); else e.returnValue = false;
       var a = editor.selectionStart, b = editor.selectionEnd;
@@ -380,13 +541,22 @@ STOP</pre>
       editChanged();
     }
   };
+  title.onkeydown = function (e) {
+    if ((e.ctrlKey || e.metaKey) && e.keyCode === 83) {
+      if (e.preventDefault) e.preventDefault(); else e.returnValue = false;
+      saveNow();
+    }
+  };
   title.oninput = function () {
     current().title = title.value;
     current().updated = new Date().getTime();
     refreshSelect();
     scheduleSave();
+    renderLibrary();
   };
   select.onchange = function () { saveNow(); data.active = select.value; render(); saveNow(); };
+  searchBox.oninput = renderLibrary;
+  el('newNoteDesktop').onclick = function () { el('newNote').click(); };
   el('newNote').onclick = function () {
     saveNow();
     var note = freshNote();
