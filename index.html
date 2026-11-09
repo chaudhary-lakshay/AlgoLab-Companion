@@ -463,6 +463,20 @@
       .tab-brand-name { font-size: 16px; }
       .tab { font-size: 8.5px; }
     }
+
+    /* Edition 06: pinned draft actions at bottom left; right panel only hosts keywords. */
+    .library-actions { display: none; }
+    @media (min-width: 1180px) {
+      .workspace .library-panel { display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-orient: vertical; -ms-flex-direction: column; flex-direction: column; overflow: hidden; }
+      .library-panel .library-top, .library-panel .library-search, .library-panel .library-count, .library-panel > label { -webkit-box-flex: 0; -ms-flex: 0 0 auto; flex: 0 0 auto; }
+      .library-panel .library-list { -webkit-box-flex: 1; -ms-flex: 1 1 auto; flex: 1 1 auto; min-height: 0; overflow-y: auto; padding-right: 3px; }
+      .library-actions { display: block; -webkit-box-flex: 0; -ms-flex: 0 0 auto; flex: 0 0 auto; margin-top: 12px; padding-top: 14px; border-top: 1px dashed #b8ad9d; }
+      .library-actions .field-label { margin-bottom: 10px; }
+      .library-action-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      .library-action-grid .action { margin: 0; width: 100%; min-width: 0; min-height: 41px; padding: 8px 3px; font-size: 10px; letter-spacing: 0; }
+      .tool-panel .tools-section-label, .tool-panel .actions { display: none; }
+      .workspace .tool-panel { overflow-y: hidden; }
+    }
   </style>
 </head>
 <body>
@@ -474,7 +488,7 @@
     </div>
     <button type="button" class="tab active" data-target="notebook" aria-selected="true">01 / NOTEBOOK</button>
     <button type="button" class="tab" data-target="reference" aria-selected="false">02 / REFERENCE</button>
-    <span class="tab-docket">PERSONAL STUDY FILE <b>· LOCAL ARCHIVE</b></span>
+    <span class="tab-docket">PERSONAL STUDY FILE</span>
   </nav>
 
   <main class="workspace">
@@ -484,7 +498,15 @@
       <input type="text" id="librarySearch" class="library-search" placeholder="Search saved notes" autocomplete="off">
       <p id="libraryCount" class="library-count">Drafts on this device</p>
       <div id="libraryList" class="library-list" role="group" aria-label="Select a draft"></div>
-      <div class="library-foot"><strong>LOCAL ARCHIVE</strong><br>These notes belong to this browser. Export .TXT to back up or move them.</div>
+      <div class="library-actions" aria-label="Draft actions">
+        <span class="field-label">Draft actions</span>
+        <div class="library-action-grid">
+          <button type="button" class="action primary" data-draft-action="exportNote">Export .TXT</button>
+          <button type="button" class="action" data-draft-action="importNote">Import .TXT</button>
+          <button type="button" class="action" data-draft-action="exampleNote">Insert example</button>
+          <button type="button" class="action" data-draft-action="deleteNote" style="color:#a03b32">Delete draft</button>
+        </div>
+      </div>
     </aside>
     <section id="notebook" class="content">
       <span class="section-code">File No. 01 — Working notes</span>
@@ -545,7 +567,7 @@
       </div>
       <p id="keywordHint" class="keyword-hint" aria-live="polite"></p>
       <div id="chips" class="chip-row" aria-label="Pseudocode keywords and operations"></div>
-      <p class="keyword-note">Data structure labels are suggested operations, not fixed Java or pseudocode syntax.</p>
+
       <h3 class="field-label tools-section-label">Draft actions</h3>
       <div class="actions">
         <button type="button" id="exportNote" class="action primary">Export .TXT</button>
@@ -554,10 +576,7 @@
         <button type="button" id="deleteNote" class="action" style="color:#a03b32">Delete draft</button>
       </div>
       <input type="file" id="fileInput" accept=".txt,text/plain">
-      <div class="tools-notes">
-        <p class="notice">Drafts save in this browser. To move notes between devices, export a .TXT file, transfer it, and import it on the other device.</p>
-        <p class="notice" id="offlineStatus">This page also works as a downloaded HTML file, without internet.</p>
-      </div>
+
     </aside>
 
     <section id="reference" class="content hidden">
@@ -676,6 +695,14 @@ STOP</pre>
   var data;
 
   function el(id) { return document.getElementById(id); }
+  // Desktop action bar reuses the same handlers as the mobile Quick Tools drawer.
+  var desktopActions = document.querySelectorAll('[data-draft-action]');
+  for (var actionIndex = 0; actionIndex < desktopActions.length; actionIndex++) {
+    desktopActions[actionIndex].onclick = function () {
+      var target = el(this.getAttribute('data-draft-action'));
+      if (target) target.click();
+    };
+  }
   function escapeHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
   function freshNote() { return { id: 'note-' + new Date().getTime() + '-' + Math.floor(Math.random() * 99999), title: 'Untitled algorithm', body: '', updated: new Date().getTime() }; }
   function validNote(n) { return n && typeof n.id === 'string' && typeof n.title === 'string' && typeof n.body === 'string' && typeof n.updated === 'number'; }
@@ -1055,7 +1082,7 @@ STOP</pre>
     if (editor.value.replace(/\s/g, '').length && !window.confirm('Replace this note with the example?')) return;
     editor.value = 'START\nREAD n\nSET sum = 0\nFOR i FROM 1 TO n\n  READ value\n  SET sum = sum + value\nEND FOR\nPRINT sum\nSTOP';
     if (!title.value || title.value === 'Untitled algorithm') { title.value = 'Sum of N values'; current().title = title.value; }
-    closeTools(false); editChanged(); refreshSelect(); editor.focus();
+    closeTools(false); editChanged(); refreshSelect(); renderTabs(); editor.focus();
   };
   function fileName(s) {
     var name = (s || 'untitled-algorithm').toLowerCase().replace(/[^a-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
@@ -1129,7 +1156,7 @@ STOP</pre>
   }
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
     navigator.serviceWorker.register('./sw.js').then(function () {
-      el('offlineStatus').textContent = 'Offline mode enabled after first online visit. Notes still stay on this device.';
+      /* Offline shell available; no status message is needed in the editor. */
     }, function () { /* The HTML page still works when downloaded. */ });
   }
 })();
