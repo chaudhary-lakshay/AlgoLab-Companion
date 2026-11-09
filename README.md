@@ -4,7 +4,7 @@ A responsive pseudocode notebook and flowchart reference for AlgoLab, designed f
 
 ## Pseudocode code editor
 
-The notebook now has a dark code-editor canvas with line numbers, syntax coloring for pseudocode keywords, numbers, operators, strings and comments, and horizontally scrollable tabs for the latest saved drafts. Create another draft with the `+` tab. Tab and Shift+Tab indent/outdent using two spaces (including multi-line selections); Enter preserves the indentation and indents after block statements such as `IF … THEN`, `ELSE`, `WHILE`, and `FOR`. Ctrl+S / Cmd+S saves immediately; all drafts still use the unchanged local-storage format. The editor does not run Java.
+The notebook retains a light paper-style editor with line numbers, distinct colors for keyword families (input, output, conditions, loops, assignments and functions), plus colors for strings, numbers, operators and comments. Horizontally scrollable file tabs switch between the latest saved drafts. Create another draft with the `+` tab. Tab and Shift+Tab indent/outdent using two spaces (including multi-line selections); Enter preserves the indentation and indents after block statements such as `IF … THEN`, `ELSE`, `WHILE`, and `FOR`. Ctrl+S / Cmd+S saves immediately; all drafts still use the unchanged local-storage format. The editor does not run Java.
 
 ## Responsive layouts
 
