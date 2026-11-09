@@ -57,6 +57,15 @@
     .tok-comment { color: #747b70; font-style: italic; }
     .line-note { display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-pack: justify; -ms-flex-pack: justify; justify-content: space-between; margin-top: 7px; font: 11px/1.4 'Courier New', monospace; color: #77766d; }
     .quick-header { margin: 20px 0 8px; }
+    .keyword-controls { display: grid; grid-template-columns: 1fr; gap: 9px; margin-bottom: 10px; }
+    .keyword-controls .field-label { margin-bottom: 4px; letter-spacing: .5px; }
+    .keyword-controls select, .keyword-controls input[type=search] { height: 38px; width: 100%; min-width: 0; padding: 6px 9px; border: 1px solid #b0a592; border-radius: 2px; background: #faf7f0; color: #303731; font: 12px/1.3 'Courier New', monospace; }
+    .keyword-hint { margin: 0 0 10px; color: #777168; font: 11px/1.4 'Courier New', monospace; }
+    .keyword-note { margin: 9px 0 1px; color: #66665d; font-size: 11px; line-height: 1.45; }
+    .keyword-empty { margin: 12px 0; font-size: 12px; color: #67625a; }
+    @media (min-width: 1180px) { .tool-panel .chip-row { max-height: 178px; overflow-y: auto; padding-right: 3px; } }
+    @media (max-width: 1179px) { .tool-panel.is-open .chip-row { max-height: 35vh; overflow-y: auto; } }
+    .keyword-table th { overflow-wrap: break-word; }
     .chip-row { line-height: 1.8; }
     .chip { display: inline-block; vertical-align: middle; min-height: 38px; margin: 0 5px 7px 0; padding: 8px 11px; border: 1px solid #b4aa9a; border-radius: 2px; background: #eee9dd; color: #8d392e; font: bold 12px/20px 'Courier New', monospace; }
     .chip:active { background: #ddd5c7; }
@@ -315,8 +324,27 @@
         <div><span class="section-code">Field kit / 03</span><h2 class="tools-heading">Writing tools</h2></div>
         <button type="button" id="closeTools" class="small-btn tools-close" aria-label="Close writing tools">Close ✕</button>
       </div>
-      <div class="quick-header field-label">Quick insert — tap a keyword</div>
-      <div id="chips" class="chip-row" aria-label="Pseudocode keywords"></div>
+      <div class="quick-header field-label">Quick insert — keyword library</div>
+      <div class="keyword-controls">
+        <div>
+          <label for="keywordCategory" class="field-label">Browse by category</label>
+          <select id="keywordCategory" aria-label="Choose pseudocode keyword category">
+            <option value="core">Basics &amp; I/O</option>
+            <option value="conditions">Conditions</option>
+            <option value="loops">Loops &amp; iteration</option>
+            <option value="functions">Functions &amp; procedures</option>
+            <option value="structures">Data structure operations</option>
+            <option value="all">All keywords</option>
+          </select>
+        </div>
+        <div>
+          <label for="keywordSearch" class="field-label">Find any keyword</label>
+          <input id="keywordSearch" type="search" placeholder="Try SWAP, END WHILE..." autocomplete="off" aria-label="Search all pseudocode keywords">
+        </div>
+      </div>
+      <p id="keywordHint" class="keyword-hint" aria-live="polite"></p>
+      <div id="chips" class="chip-row" aria-label="Pseudocode keywords and operations"></div>
+      <p class="keyword-note">Data structure labels are suggested operations, not fixed Java or pseudocode syntax.</p>
       <h3 class="field-label tools-section-label">Draft actions</h3>
       <div class="actions">
         <button type="button" id="exportNote" class="action primary">Export .TXT</button>
@@ -375,6 +403,16 @@
             <tr><th>WHILE / END WHILE</th><td>Repeat while a condition remains true.</td></tr>
             <tr><th>FOR / END FOR</th><td>Repeat through a known range or collection.</td></tr>
             <tr><th>RETURN</th><td>Give a result back from a function.</td></tr>
+            <tr><th>THEN / AND / OR / NOT</th><td>Express condition branches and Boolean logic.</td></tr>
+            <tr><th>FROM / TO / STEP</th><td>Describe a loop's range and increment.</td></tr>
+            <tr><th>DO / REPEAT / UNTIL</th><td>Write loop bodies or a repeat-until loop.</td></tr>
+            <tr><th>BREAK / CONTINUE</th><td>Exit a loop or skip to its next iteration.</td></tr>
+            <tr><th>FUNCTION / CALL / END FUNCTION</th><td>Declare, invoke, and finish a function; use RETURN for its result.</td></tr>
+            <tr><th>ARRAY / LIST / STACK / QUEUE</th><td>Describe the data structure holding values.</td></tr>
+            <tr><th>PUSH / POP / PEEK</th><td>Illustrate stack operations.</td></tr>
+            <tr><th>ENQUEUE / DEQUEUE</th><td>Illustrate queue operations.</td></tr>
+            <tr><th>INSERT / DELETE / SWAP</th><td>Describe modifications to a data structure.</td></tr>
+            <tr><th>LENGTH / SIZE / INDEX / VISIT</th><td>Reference size, location, or traversal actions.</td></tr>
           </tbody>
         </table>
       </div>
@@ -402,8 +440,25 @@ STOP</pre>
 (function () {
   'use strict';
   var STORAGE_KEY = 'algolab-companion-drafts-v1';
-  var words = ['START', 'READ', 'INPUT', 'SET', 'IF', 'ELSE IF', 'ELSE', 'END IF', 'WHILE', 'END WHILE', 'FOR', 'END FOR', 'PRINT', 'DISPLAY', 'OUTPUT', 'RETURN', 'STOP'];
-  var quick = ['READ', 'SET', 'IF', 'ELSE IF', 'ELSE', 'END IF', 'WHILE', 'FOR', 'PRINT', 'RETURN', 'STOP'];
+  // Pseudocode is descriptive rather than a formal language: these are prompts.
+  var keywordGroups = {
+    core: ['START', 'END', 'STOP', 'READ', 'INPUT', 'SET', 'PRINT', 'DISPLAY', 'OUTPUT', 'RETURN'],
+    conditions: ['IF', 'THEN', 'ELSE IF', 'ELSE', 'END IF', 'AND', 'OR', 'NOT', 'TRUE', 'FALSE'],
+    loops: ['FOR', 'FROM', 'TO', 'STEP', 'END FOR', 'WHILE', 'DO', 'END WHILE', 'REPEAT', 'UNTIL', 'BREAK', 'CONTINUE'],
+    functions: ['FUNCTION', 'END FUNCTION', 'PROCEDURE', 'END PROCEDURE', 'CALL', 'RETURN'],
+    structures: ['ARRAY', 'LIST', 'STACK', 'QUEUE', 'PUSH', 'POP', 'PEEK', 'ENQUEUE', 'DEQUEUE', 'INSERT', 'DELETE', 'SWAP', 'LENGTH', 'SIZE', 'INDEX', 'VISIT']
+  };
+  var words = [];
+  var groupNames = ['core', 'conditions', 'loops', 'functions', 'structures'];
+  for (var groupIndex = 0; groupIndex < groupNames.length; groupIndex++) {
+    var items = keywordGroups[groupNames[groupIndex]];
+    for (var wordIndex = 0; wordIndex < items.length; wordIndex++) {
+      if (words.indexOf(items[wordIndex]) === -1) words.push(items[wordIndex]);
+    }
+  }
+  // Longest matches first so END FUNCTION is not split into END + FUNCTION.
+  var sortedWords = words.slice().sort(function (a, b) { return b.length - a.length; });
+  var keywordPattern = new RegExp('(//[^\\n]*)|\\b(' + sortedWords.join('|').replace(/ /g, '[ \\t]+') + ')\\b|\\b([0-9]+)\\b', 'gi');
   var editor = document.getElementById('editor');
   var overlay = document.getElementById('highlight');
   var shell = document.getElementById('editorShell');
@@ -518,7 +573,8 @@ STOP</pre>
   }
   function colorize(s) {
     var output = '';
-    var pattern = /(\/\/[^\n]*)|\b(ELSE[ \t]+IF|END[ \t]+IF|END[ \t]+WHILE|END[ \t]+FOR|START|STOP|READ|INPUT|SET|IF|ELSE|WHILE|FOR|PRINT|DISPLAY|OUTPUT|RETURN)\b|\b([0-9]+)\b/gi;
+    var pattern = keywordPattern;
+    pattern.lastIndex = 0;
     var last = 0;
     var match;
     while ((match = pattern.exec(s)) !== null) {
@@ -597,7 +653,25 @@ STOP</pre>
     b.onclick = function () { closeTools(false); insertText(word, replacement); };
     parent.appendChild(b);
   }
-  for (var i = 0; i < quick.length; i++) makeChip(quick[i], el('chips'));
+  function renderKeywords() {
+    var category = el('keywordCategory').value;
+    var query = el('keywordSearch').value.toUpperCase().replace(/^\s+|\s+$/g, '');
+    var source = query || category === 'all' ? words : (keywordGroups[category] || words);
+    var matches = [];
+    for (var i = 0; i < source.length; i++) if (!query || source[i].indexOf(query) >= 0) matches.push(source[i]);
+    var list = el('chips');
+    while (list.firstChild) list.removeChild(list.firstChild);
+    for (var j = 0; j < matches.length; j++) makeChip(matches[j], list);
+    if (!matches.length) {
+      var empty = document.createElement('p'); empty.className = 'keyword-empty';
+      empty.textContent = 'No matching token. Use plain text for anything else.';
+      list.appendChild(empty);
+    }
+    el('keywordHint').textContent = matches.length + ' shown · ' + words.length + ' in the library' + (query ? ' · searching all categories' : '');
+  }
+  el('keywordCategory').onchange = renderKeywords;
+  el('keywordSearch').oninput = renderKeywords;
+  renderKeywords();
   function showSuggestions() {
     var fragment = cursorWord();
     while (suggest.firstChild) suggest.removeChild(suggest.firstChild);
