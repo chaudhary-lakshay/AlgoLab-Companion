@@ -1,5 +1,5 @@
 /* Optional GitHub Pages offline shell. No API requests, no analytics. */
-var CACHE_NAME = 'algolab-companion-shell-v6';
+var CACHE_NAME = 'algolab-companion-shell-v7';
 self.addEventListener('install', function (event) {
   event.waitUntil(caches.open(CACHE_NAME).then(function (cache) {
     return cache.addAll(['./', './index.html', './sw.js']);
