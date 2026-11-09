@@ -2,6 +2,10 @@
 
 A responsive pseudocode notebook and flowchart reference for AlgoLab, designed for desktop, phones and the Lenovo Android 5.1 tablet. Inspired by the Pathways Case File aesthetic.
 
+## Pseudocode code editor
+
+The notebook now has a dark code-editor canvas with line numbers, syntax coloring for pseudocode keywords, numbers, operators, strings and comments, and horizontally scrollable tabs for the latest saved drafts. Create another draft with the `+` tab. Tab and Shift+Tab indent/outdent using two spaces (including multi-line selections); Enter preserves the indentation and indents after block statements such as `IF … THEN`, `ELSE`, `WHILE`, and `FOR`. Ctrl+S / Cmd+S saves immediately; all drafts still use the unchanged local-storage format. The editor does not run Java.
+
 ## Responsive layouts
 
 - **PC (1180px+)**: full-width editor-first workbench with a compact dark masthead, searchable case files on the left, an enlarged editor, and searchable writing tools on the right. Optional Focus button hides both sidebars.
