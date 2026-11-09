@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
-  <meta name="theme-color" content="#303a34">
+  <meta name="theme-color" content="#f0eadf">
   <meta name="description" content="Offline pseudocode field notes and a flowchart cheat sheet for AlgoLab.">
   <title>AlgoLab Companion — Field Notes</title>
   <style>
@@ -415,22 +415,66 @@
       .editor-footer { font-size: 10px; }
       .editor-footer .edit-mode { display: none; }
     }
+
+    /* Edition 05 — let the case-file tabs be the whole header.
+       Keep paper, ink, and stamp-red as the visual language, not an IDE skin. */
+    .tabs { align-items: stretch; border-top: 3px solid #344039; background: #f0eadf; }
+    .tab-brand { display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; gap: 11px; min-width: 0; padding: 5px 17px; border-right: 1px solid #d0c6b7; white-space: nowrap; }
+    .tab-brand-name { color: #323932; font: bold 22px/1.1 Georgia, 'Times New Roman', serif; letter-spacing: -.65px; }
+    .tab-brand-name strong { color: #a24636; }
+    .tab-brand-caption { color: #897f70; font: bold 9px/1.2 'Courier New', monospace; letter-spacing: .45px; }
+    .tab-docket { display: none; }
+    @media (min-width: 1180px) {
+      html, body { height: 100%; overflow: hidden; background: #e9e3d7; }
+      .page { display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-orient: vertical; -ms-flex-direction: column; flex-direction: column; height: 100vh; min-height: 0; width: 100%; background: #f5f1e8; }
+      .tabs { -webkit-box-flex: 0; -ms-flex: 0 0 51px; flex: 0 0 51px; height: 51px; min-height: 51px; padding: 0; position: relative; background: #f1ece2; border-top: 3px solid #343b35; border-bottom: 1px solid #c7beaf; }
+      .tab-brand { -webkit-box-flex: 0; -ms-flex: 0 0 242px; flex: 0 0 242px; padding: 0 19px; }
+      .tab-brand-name { font-size: 23px; }
+      .tab-brand-caption { font-size: 9px; }
+      .tab { -webkit-box-flex: 0; -ms-flex: 0 0 176px; flex: 0 0 176px; min-width: 0; height: 48px; min-height: 48px; padding: 0 16px; border-right: 1px solid #d7cfbf; }
+      .tab.active { background: #faf8f3; box-shadow: inset 0 -3px 0 #a14438; }
+      .tab-docket { display: -webkit-box; display: -ms-flexbox; display: flex; align-items: center; justify-content: flex-end; margin-left: auto; padding: 0 22px; color: #756f62; font: 10px/1.2 'Courier New',monospace; letter-spacing: .5px; white-space: nowrap; }
+      .tab-docket b { font-weight: 400; color: #aa5041; }
+      .workspace { -webkit-box-flex: 1; -ms-flex: 1 1 auto; flex: 1 1 auto; height: auto; min-height: 0; overflow: hidden; }
+      .workspace #notebook { min-height: 0; overflow: hidden; }
+      .workspace #notebook .editor-shell { -webkit-box-flex: 1; -ms-flex: 1 1 auto; flex: 1 1 auto; min-height: 0; }
+      .workspace .library-panel, .workspace .tool-panel, .workspace #reference { min-height: 0; overflow-y: auto; }
+      .footer { -webkit-box-flex: 0; -ms-flex: 0 0 30px; flex: 0 0 30px; }
+    }
+    @media (min-width: 1180px) and (max-width: 1400px) {
+      .tab-brand { -webkit-box-flex: 0; -ms-flex: 0 0 218px; flex: 0 0 218px; }
+      .tab-docket { font-size: 9px; padding: 0 11px; }
+    }
+    @media (max-width: 1179px) {
+      .tabs { padding: 0; }
+      .tab-brand { -webkit-box-flex: 0; -ms-flex: 0 0 190px; flex: 0 0 190px; }
+      .tab { min-width: 0; }
+      .tab-brand-name { font-size: 21px; }
+      .tab-brand-caption { display: none; }
+    }
+    @media (max-width: 599px) {
+      .tabs { min-height: 45px; }
+      .tab-brand { -webkit-box-flex: 0; -ms-flex: 0 0 114px; flex: 0 0 114px; padding: 0 8px; }
+      .tab-brand-name { font-size: 17px; letter-spacing: -.5px; }
+      .tab { padding: 8px 3px; min-height: 43px; font-size: 9px; letter-spacing: 0; }
+    }
+    @media (max-width: 350px) {
+      .tab-brand { -webkit-box-flex: 0; -ms-flex: 0 0 104px; flex: 0 0 104px; padding: 0 5px; }
+      .tab-brand-name { font-size: 16px; }
+      .tab { font-size: 8.5px; }
+    }
   </style>
 </head>
 <body>
 <div class="page">
-  <header class="masthead">
-    <span class="eyebrow">AlgoLab // Field Companion &nbsp; • &nbsp; Vol. 01</span>
-    <div class="masthead-row">
-      <h1 class="brand">Field <span>Notes.</span></h1>
-      <div class="seal">STUDY<br>FILE</div>
-    </div>
-    <p class="subhead">Pseudocode &nbsp; / &nbsp; Flowcharts &nbsp; / &nbsp; Thinking aloud</p>
-  </header>
-
   <nav class="tabs" aria-label="Sections">
+    <div class="tab-brand" aria-label="AlgoLab Field Notes">
+      <span class="tab-brand-name">Field <strong>Notes.</strong></span>
+      <span class="tab-brand-caption">ALGOLAB / VOL. 01</span>
+    </div>
     <button type="button" class="tab active" data-target="notebook" aria-selected="true">01 / NOTEBOOK</button>
     <button type="button" class="tab" data-target="reference" aria-selected="false">02 / REFERENCE</button>
+    <span class="tab-docket">PERSONAL STUDY FILE <b>· LOCAL ARCHIVE</b></span>
   </nav>
 
   <main class="workspace">
