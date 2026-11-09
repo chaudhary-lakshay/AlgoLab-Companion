@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+  <meta name="theme-color" content="#efeadd">
+  <meta name="description" content="Offline pseudocode field notes and a flowchart cheat sheet for AlgoLab.">
+  <title>AlgoLab Companion — Field Notes</title>
+  <style>
+    /* No external assets, no framework. Designed to survive older Android browsers. */
+    * { box-sizing: border-box; }
+    html { background: #e5dfd1; }
+    body { margin: 0; color: #282c2b; background: #e5dfd1; font-family: Arial, Helvetica, sans-serif; font-size: 15px; -webkit-text-size-adjust: 100%; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    button:focus, input:focus, select:focus, textarea:focus { outline: 2px solid #a94438; outline-offset: 2px; }
+    a { color: #963d32; }
+    .page { max-width: 710px; margin: 0 auto; min-height: 100vh; background: #f5f1e8; border-left: 1px solid #d2c9b8; border-right: 1px solid #d2c9b8; }
+    .masthead { padding: 20px 18px 14px; border-top: 5px solid #272b29; border-bottom: 2px solid #373b37; background: #f1ebdf; }
+    .eyebrow { display: block; color: #7a766d; font-family: 'Courier New', monospace; font-weight: bold; font-size: 10px; letter-spacing: 1.8px; line-height: 1.5; text-transform: uppercase; }
+    .masthead-row { display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; -webkit-box-pack: justify; -ms-flex-pack: justify; justify-content: space-between; margin-top: 6px; }
+    .brand { margin: 0; font: bold 28px/1.05 Georgia, 'Times New Roman', serif; letter-spacing: -.8px; }
+    .brand span { color: #9f4436; }
+    .seal { border: 2px solid #9f4436; color: #9f4436; padding: 5px 7px; transform: rotate(-4deg); font: bold 10px/1.25 'Courier New', monospace; text-align: center; letter-spacing: 1px; }
+    .subhead { margin: 9px 0 0; font: 12px/1.5 'Courier New', monospace; color: #64665f; }
+    .tabs { display: -webkit-box; display: -ms-flexbox; display: flex; border-bottom: 1px solid #bcb5a5; background: #ebe6da; }
+    .tab { -webkit-box-flex: 1; -ms-flex: 1; flex: 1; min-height: 49px; padding: 10px 7px; color: #65645e; font: bold 12px 'Courier New', monospace; letter-spacing: .8px; border: 0; border-right: 1px solid #cfc7b8; background: transparent; }
+    .tab:last-child { border-right: 0; }
+    .tab.active { color: #922f2b; background: #f5f1e8; box-shadow: inset 0 -3px 0 #a94537; }
+    .content { padding: 19px 18px 28px; }
+    .hidden { display: none !important; }
+    .section-code { color: #9e4235; font: bold 11px 'Courier New', monospace; letter-spacing: 1.2px; text-transform: uppercase; }
+    .section-title { margin: 6px 0 12px; font: bold 25px/1.15 Georgia, 'Times New Roman', serif; }
+    .rule { border: 0; border-top: 1px solid #c4baab; margin: 17px 0; }
+    .field-label { display: block; margin-bottom: 6px; font: bold 11px 'Courier New', monospace; letter-spacing: .8px; text-transform: uppercase; color: #686b65; }
+    .note-picker { display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: end; -ms-flex-align: end; align-items: flex-end; margin-bottom: 15px; }
+    .note-picker .picker-fill { -webkit-box-flex: 1; -ms-flex: 1; flex: 1; min-width: 0; }
+    select, input[type=text] { height: 44px; width: 100%; padding: 9px 10px; background: #fffcf5; color: #222723; border: 1px solid #a69f91; border-radius: 2px; }
+    .note-picker button { margin-left: 7px; }
+    .small-btn { min-height: 44px; padding: 8px 12px; border: 1px solid #444843; background: transparent; color: #242b29; font: bold 12px 'Courier New', monospace; white-space: nowrap; }
+    .small-btn:active, .small-btn:hover { background: #e6e0d4; }
+    .small-btn.danger { color: #962f2e; border-color: #b58e85; }
+    .note-name { margin: 0 0 12px; }
+    .editor-heading { display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-pack: justify; -ms-flex-pack: justify; justify-content: space-between; align-items: center; margin-top: 12px; }
+    .status { font: 11px 'Courier New', monospace; color: #5e6a5b; text-align: right; }
+    .status.warn { color: #a33b33; }
+    .editor-shell { position: relative; border: 1.5px solid #42463d; background: #fffcf6; min-height: 315px; height: 44vh; max-height: 650px; overflow: hidden; margin-top: 7px; }
+    .editor-shell:before { content: ''; position: absolute; top: 0; bottom: 0; width: 4px; left: 0; background: #a54739; z-index: 2; pointer-events: none; }
+    #editor, #highlight { width: 100%; height: 100%; margin: 0; padding: 16px 15px 16px 20px; border: 0; border-radius: 0; outline: none; font: 15px/25px 'Courier New', Consolas, monospace; letter-spacing: 0; tab-size: 2; -moz-tab-size: 2; overflow: auto; white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; }
+    #editor { position: absolute; left: 0; top: 0; z-index: 1; color: #252c2a; background: transparent; resize: none; -webkit-appearance: none; }
+    #editor::placeholder { color: #9e9a90; }
+    #highlight { display: none; position: absolute; left: 0; top: 0; z-index: 0; pointer-events: none; color: #252c2a; }
+    .enhanced #editor { color: transparent; -webkit-text-fill-color: transparent; caret-color: #242b29; }
+    .enhanced #highlight { display: block; }
+    .tok-key { font-weight: bold; color: #a24136; }
+    .tok-num { color: #285f67; }
+    .tok-comment { color: #747b70; font-style: italic; }
+    .line-note { display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-pack: justify; -ms-flex-pack: justify; justify-content: space-between; margin-top: 7px; font: 11px/1.4 'Courier New', monospace; color: #77766d; }
+    .quick-header { margin: 20px 0 8px; }
+    .chip-row { line-height: 1.8; }
+    .chip { display: inline-block; vertical-align: middle; min-height: 38px; margin: 0 5px 7px 0; padding: 8px 11px; border: 1px solid #b4aa9a; border-radius: 2px; background: #eee9dd; color: #8d392e; font: bold 12px/20px 'Courier New', monospace; }
+    .chip:active { background: #ddd5c7; }
+    .suggestions { margin: 10px 0 0; padding: 10px 12px 3px; border: 1px solid #bdb19f; background: #eee9dc; }
+    .suggestions .field-label { margin-bottom: 7px; }
+    .actions { display: -webkit-box; display: -ms-flexbox; display: flex; -ms-flex-wrap: wrap; flex-wrap: wrap; margin-top: 14px; }
+    .action { min-height: 45px; margin: 0 8px 8px 0; padding: 8px 14px; border: 1px solid #373d38; border-radius: 2px; background: #f4f0e7; color: #282c2a; font: bold 12px 'Courier New', monospace; letter-spacing: .4px; }
+    .action.primary { background: #323c38; color: #f9f3e8; }
+    .action:active { opacity: .75; }
+    .notice { margin: 5px 0; color: #625f58; font-size: 12px; line-height: 1.55; }
+    .reference-intro { font-size: 13px; line-height: 1.6; color: #636960; margin-bottom: 14px; }
+    .ref-group { margin-bottom: 23px; }
+    .ref-caption { margin: 0 0 8px; padding-bottom: 6px; border-bottom: 2px solid #4d5149; color: #444b43; font: bold 12px 'Courier New', monospace; letter-spacing: 1px; text-transform: uppercase; }
+    .ref-row { display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; padding: 11px 5px; border-bottom: 1px solid #d9d1c3; }
+    .shape { display: block; width: 108px; min-width: 108px; height: 64px; margin-right: 17px; }
+    .ref-info { -webkit-box-flex: 1; -ms-flex: 1; flex: 1; min-width: 0; }
+    .ref-info strong { display: block; margin-bottom: 4px; font: bold 13px 'Courier New', monospace; color: #282f2b; }
+    .ref-info p { margin: 0; font-size: 12px; line-height: 1.5; color: #656861; }
+    .keyword-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .keyword-table tr { border-bottom: 1px solid #d8d0c3; }
+    .keyword-table th { width: 39%; text-align: left; padding: 11px 8px 11px 4px; font: bold 12px 'Courier New', monospace; color: #a34337; vertical-align: top; }
+    .keyword-table td { padding: 10px 4px 10px 8px; color: #4c554d; font-size: 13px; line-height: 1.55; vertical-align: top; }
+    .code-example { overflow-x: auto; padding: 14px; border-left: 4px solid #a34537; background: #eae4d8; white-space: pre; color: #313b36; font: 13px/1.7 'Courier New', monospace; }
+    .footer { padding: 16px 18px 24px; border-top: 2px solid #353a35; color: #76746e; font: 10px/1.5 'Courier New', monospace; letter-spacing: .3px; }
+    .footer b { color: #9c3e32; }
+    #fileInput { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+    @media (max-width: 390px) {
+      .masthead { padding: 16px 13px 12px; }
+      .content { padding: 16px 13px 25px; }
+      .brand { font-size: 25px; }
+      .section-title { font-size: 23px; }
+      .seal { font-size: 9px; }
+      .shape { width: 86px; min-width: 86px; margin-right: 11px; }
+      .editor-shell { min-height: 275px; height: 42vh; }
+      #editor, #highlight { font-size: 14px; line-height: 24px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <header class="masthead">
+    <span class="eyebrow">AlgoLab // Field Companion &nbsp; • &nbsp; Vol. 01</span>
+    <div class="masthead-row">
+      <h1 class="brand">Field <span>Notes.</span></h1>
+      <div class="seal">STUDY<br>FILE</div>
+    </div>
+    <p class="subhead">Pseudocode &nbsp; / &nbsp; Flowcharts &nbsp; / &nbsp; Thinking aloud</p>
+  </header>
+
+  <nav class="tabs" aria-label="Sections">
+    <button type="button" class="tab active" data-target="notebook" aria-selected="true">01 / NOTEBOOK</button>
+    <button type="button" class="tab" data-target="reference" aria-selected="false">02 / REFERENCE</button>
+  </nav>
+
+  <main>
+    <section id="notebook" class="content">
+      <span class="section-code">File No. 01 — Working notes</span>
+      <h2 class="section-title">Pseudocode notebook</h2>
+      <div class="note-picker">
+        <div class="picker-fill">
+          <label for="noteSelect" class="field-label">Saved drafts on this device</label>
+          <select id="noteSelect" aria-label="Choose a saved note"></select>
+        </div>
+        <button type="button" id="newNote" class="small-btn" title="Create a note">+ NEW</button>
+      </div>
+      <div class="note-name">
+        <label for="noteTitle" class="field-label">Problem / note title</label>
+        <input id="noteTitle" type="text" maxlength="90" placeholder="Example: Binary Search" autocomplete="off">
+      </div>
+      <div class="editor-heading">
+        <label for="editor" class="field-label" style="margin:0">Working area</label>
+        <span id="saveStatus" class="status" aria-live="polite">Stored on this device</span>
+      </div>
+      <div id="editorShell" class="editor-shell">
+        <pre id="highlight" aria-hidden="true"></pre>
+        <textarea id="editor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Pseudocode editor" placeholder="Write the steps in plain language.&#10;&#10;START&#10;READ n&#10;SET total = 0&#10;..."></textarea>
+      </div>
+      <div class="line-note"><span id="lineCount">1 line</span><span>Plain text, not executable code</span></div>
+      <div id="suggestions" class="suggestions hidden" aria-live="polite"></div>
+      <div class="quick-header field-label">Quick insert — tap a keyword</div>
+      <div id="chips" class="chip-row" aria-label="Pseudocode keywords"></div>
+      <div class="actions">
+        <button type="button" id="exportNote" class="action primary">Export .TXT</button>
+        <button type="button" id="importNote" class="action">Import .TXT</button>
+        <button type="button" id="exampleNote" class="action">Insert example</button>
+        <button type="button" id="deleteNote" class="action" style="color:#a03b32">Delete draft</button>
+      </div>
+      <input type="file" id="fileInput" accept=".txt,text/plain">
+      <p class="notice">Drafts save in this browser. To move notes between the tablet and PC, export a text file, transfer it through Google Drive, then import it there.</p>
+      <p class="notice" id="offlineStatus">This page also works as a downloaded HTML file, without internet.</p>
+    </section>
+
+    <section id="reference" class="content hidden">
+      <span class="section-code">File No. 02 — Field reference</span>
+      <h2 class="section-title">Keep the shapes straight</h2>
+      <p class="reference-intro">A quick reminder of the shapes and words from your paper notebook. Use these to plan the steps; no strict pseudocode grammar is enforced.</p>
+      <div class="ref-group">
+        <h3 class="ref-caption">A / Flowchart symbols</h3>
+        <div class="ref-row">
+          <svg class="shape" viewBox="0 0 108 64" aria-label="Oval shape" role="img"><ellipse cx="54" cy="32" rx="47" ry="23" fill="none" stroke="#974033" stroke-width="2.4"/><text x="54" y="36" font-size="10" fill="#333" text-anchor="middle" font-family="monospace">START / END</text></svg>
+          <div class="ref-info"><strong>Start / End</strong><p>Oval — begin or stop the process.</p></div>
+        </div>
+        <div class="ref-row">
+          <svg class="shape" viewBox="0 0 108 64" aria-label="Parallelogram shape" role="img"><polygon points="22,10 103,10 86,54 5,54" fill="none" stroke="#974033" stroke-width="2.4"/><text x="54" y="35" font-size="10" fill="#333" text-anchor="middle" font-family="monospace">READ/PRINT</text></svg>
+          <div class="ref-info"><strong>Input / Output</strong><p>Parallelogram — read a value or display a result.</p></div>
+        </div>
+        <div class="ref-row">
+          <svg class="shape" viewBox="0 0 108 64" aria-label="Rectangle shape" role="img"><rect x="7" y="12" width="94" height="40" fill="none" stroke="#974033" stroke-width="2.4"/><text x="54" y="36" font-size="11" fill="#333" text-anchor="middle" font-family="monospace">PROCESS</text></svg>
+          <div class="ref-info"><strong>Process</strong><p>Rectangle — calculate or update a value, e.g. SET.</p></div>
+        </div>
+        <div class="ref-row">
+          <svg class="shape" viewBox="0 0 108 64" aria-label="Diamond shape" role="img"><polygon points="54,3 104,32 54,61 4,32" fill="none" stroke="#974033" stroke-width="2.4"/><text x="54" y="36" font-size="11" fill="#333" text-anchor="middle" font-family="monospace">YES / NO?</text></svg>
+          <div class="ref-info"><strong>Decision</strong><p>Diamond — ask a condition; choose Yes or No.</p></div>
+        </div>
+        <div class="ref-row">
+          <svg class="shape" viewBox="0 0 108 64" aria-label="Arrow shape" role="img"><path d="M6 32H100M89 21L101 32L89 43" fill="none" stroke="#974033" stroke-width="2.4" stroke-linejoin="round"/></svg>
+          <div class="ref-info"><strong>Flow arrow</strong><p>Shows the direction of execution.</p></div>
+        </div>
+        <div class="ref-row">
+          <svg class="shape" viewBox="0 0 108 64" aria-label="Connector circle" role="img"><circle cx="54" cy="32" r="22" fill="none" stroke="#974033" stroke-width="2.4"/><text x="54" y="37" font-size="14" fill="#333" text-anchor="middle" font-family="monospace">A</text></svg>
+          <div class="ref-info"><strong>Connector</strong><p>Continue the flow at a matching point elsewhere.</p></div>
+        </div>
+      </div>
+      <div class="ref-group">
+        <h3 class="ref-caption">B / Pseudocode keywords</h3>
+        <table class="keyword-table" aria-label="Pseudocode keyword reference">
+          <tbody>
+            <tr><th>START / STOP</th><td>Begin and finish the algorithm.</td></tr>
+            <tr><th>READ / INPUT</th><td>Take a value from the user or problem.</td></tr>
+            <tr><th>PRINT / DISPLAY / OUTPUT</th><td>Show the answer or a value.</td></tr>
+            <tr><th>SET</th><td>Create or change a value.</td></tr>
+            <tr><th>IF</th><td>Test a condition; enter its Yes branch.</td></tr>
+            <tr><th>ELSE IF / ELSE / END IF</th><td>Alternative branches and end of a decision.</td></tr>
+            <tr><th>WHILE / END WHILE</th><td>Repeat while a condition remains true.</td></tr>
+            <tr><th>FOR / END FOR</th><td>Repeat through a known range or collection.</td></tr>
+            <tr><th>RETURN</th><td>Give a result back from a function.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ref-group">
+        <h3 class="ref-caption">C / Tiny worked example</h3>
+        <pre class="code-example">START
+READ n
+SET sum = 0
+FOR i FROM 1 TO n
+  READ value
+  SET sum = sum + value
+END FOR
+PRINT sum
+STOP</pre>
+        <p class="notice">The sequence is the idea. Later, write the equivalent Java solution in AlgoLab and step through it using your visualizer.</p>
+      </div>
+      <button type="button" id="backToNotebook" class="action primary">Back to notebook</button>
+    </section>
+  </main>
+  <footer class="footer">ALGO<span style="color:#a23f34">LAB</span> / COMPANION &nbsp; — &nbsp; <b>LOCAL FIRST</b> &nbsp; • &nbsp; NO ACCOUNT, NO SERVER, NO TRACKING</footer>
+</div>
+<script>
+(function () {
+  'use strict';
+  var STORAGE_KEY = 'algolab-companion-drafts-v1';
+  var words = ['START', 'READ', 'INPUT', 'SET', 'IF', 'ELSE IF', 'ELSE', 'END IF', 'WHILE', 'END WHILE', 'FOR', 'END FOR', 'PRINT', 'DISPLAY', 'OUTPUT', 'RETURN', 'STOP'];
+  var quick = ['READ', 'SET', 'IF', 'ELSE IF', 'ELSE', 'END IF', 'WHILE', 'FOR', 'PRINT', 'RETURN', 'STOP'];
+  var editor = document.getElementById('editor');
+  var overlay = document.getElementById('highlight');
+  var shell = document.getElementById('editorShell');
+  var title = document.getElementById('noteTitle');
+  var select = document.getElementById('noteSelect');
+  var status = document.getElementById('saveStatus');
+  var suggest = document.getElementById('suggestions');
+  var timer = null;
+  var savingWorks = true;
+  var data;
+
+  function el(id) { return document.getElementById(id); }
+  function escapeHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function freshNote() { return { id: 'note-' + new Date().getTime() + '-' + Math.floor(Math.random() * 99999), title: 'Untitled algorithm', body: '', updated: new Date().getTime() }; }
+  function validNote(n) { return n && typeof n.id === 'string' && typeof n.title === 'string' && typeof n.body === 'string' && typeof n.updated === 'number'; }
+  function load() {
+    try {
+      var saved = window.localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        var parsed = JSON.parse(saved);
+        if (parsed && parsed.notes && Object.prototype.toString.call(parsed.notes) === '[object Array]') {
+          var found = [];
+          for (var i = 0; i < parsed.notes.length; i++) if (validNote(parsed.notes[i])) found.push(parsed.notes[i]);
+          if (found.length) return { notes: found, active: parsed.active };
+        }
+      }
+    } catch (e) { savingWorks = false; }
+    var n = freshNote();
+    return { notes: [n], active: n.id };
+  }
+  data = load();
+  function current() {
+    for (var i = 0; i < data.notes.length; i++) if (data.notes[i].id === data.active) return data.notes[i];
+    data.active = data.notes[0].id;
+    return data.notes[0];
+  }
+  function statusText(str, isWarning) { status.textContent = str; status.className = 'status' + (isWarning ? ' warn' : ''); }
+  function saveNow() {
+    if (timer) { window.clearTimeout(timer); timer = null; }
+    if (!savingWorks) { statusText('Export to keep your work', true); return; }
+    try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); statusText('Saved on this device', false); }
+    catch (e) { savingWorks = false; statusText('Storage unavailable — export now', true); }
+  }
+  function scheduleSave() {
+    statusText('Saving…', false);
+    if (timer) window.clearTimeout(timer);
+    timer = window.setTimeout(saveNow, 200);
+  }
+  function refreshSelect() {
+    var oldId = current().id;
+    while (select.firstChild) select.removeChild(select.firstChild);
+    for (var i = 0; i < data.notes.length; i++) {
+      var note = data.notes[i];
+      var option = document.createElement('option');
+      option.value = note.id;
+      option.textContent = note.title || 'Untitled algorithm';
+      select.appendChild(option);
+    }
+    select.value = oldId;
+  }
+  function lineCount() {
+    var n = editor.value.split('\n').length;
+    el('lineCount').textContent = n + (n === 1 ? ' line' : ' lines');
+  }
+  function render() {
+    var n = current();
+    title.value = n.title;
+    editor.value = n.body;
+    refreshSelect();
+    syncHighlight();
+    lineCount();
+    showSuggestions();
+    if (savingWorks) statusText('Saved on this device', false);
+  }
+  function colorize(s) {
+    var output = '';
+    var pattern = /(\/\/[^\n]*)|\b(ELSE[ \t]+IF|END[ \t]+IF|END[ \t]+WHILE|END[ \t]+FOR|START|STOP|READ|INPUT|SET|IF|ELSE|WHILE|FOR|PRINT|DISPLAY|OUTPUT|RETURN)\b|\b([0-9]+)\b/gi;
+    var last = 0;
+    var match;
+    while ((match = pattern.exec(s)) !== null) {
+      output += escapeHtml(s.slice(last, match.index));
+      output += '<span class="' + (match[1] ? 'tok-comment' : match[2] ? 'tok-key' : 'tok-num') + '">' + escapeHtml(match[0]) + '</span>';
+      last = match.index + match[0].length;
+    }
+    output += escapeHtml(s.slice(last));
+    // A final newline needs an extra invisible line in the mirror.
+    if (s.slice(-1) === '\n') output += ' ';
+    return output || ' ';
+  }
+  function syncHighlight() {
+    overlay.innerHTML = colorize(editor.value);
+    overlay.scrollTop = editor.scrollTop;
+    overlay.scrollLeft = editor.scrollLeft;
+  }
+  function editChanged() {
+    var n = current();
+    n.body = editor.value;
+    n.updated = new Date().getTime();
+    syncHighlight();
+    lineCount();
+    scheduleSave();
+    showSuggestions();
+  }
+  function cursorWord() {
+    var caret = typeof editor.selectionStart === 'number' ? editor.selectionStart : editor.value.length;
+    var before = editor.value.slice(0, caret);
+    var match = /(?:^|[^A-Za-z])([A-Za-z]+(?:\s+[A-Za-z]+)?)$/.exec(before);
+    if (!match) return null;
+    return { text: match[1], start: caret - match[1].length, end: caret };
+  }
+  function insertText(value, replacement) {
+    var start = typeof editor.selectionStart === 'number' ? editor.selectionStart : editor.value.length;
+    var end = typeof editor.selectionEnd === 'number' ? editor.selectionEnd : start;
+    if (replacement) { start = replacement.start; end = replacement.end; }
+    var before = editor.value.slice(0, start);
+    var after = editor.value.slice(end);
+    var textToAdd = value;
+    // Tapped keyword on an empty line or after whitespace: add a trailing space.
+    if (!after || (after.charAt(0) !== ' ' && after.charAt(0) !== '\n')) textToAdd += ' ';
+    editor.value = before + textToAdd + after;
+    var pos = before.length + textToAdd.length;
+    editor.focus();
+    try { editor.setSelectionRange(pos, pos); } catch (e) {}
+    editChanged();
+  }
+  function makeChip(word, parent, replacement) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip'; b.textContent = word;
+    b.onclick = function () { insertText(word, replacement); };
+    parent.appendChild(b);
+  }
+  for (var i = 0; i < quick.length; i++) makeChip(quick[i], el('chips'));
+  function showSuggestions() {
+    var fragment = cursorWord();
+    while (suggest.firstChild) suggest.removeChild(suggest.firstChild);
+    if (!fragment || fragment.text.length < 2) { suggest.className = 'suggestions hidden'; return; }
+    var matches = [];
+    for (var i = 0; i < words.length; i++) {
+      if (words[i].indexOf(fragment.text.toUpperCase()) === 0 && words[i] !== fragment.text.toUpperCase()) matches.push(words[i]);
+    }
+    if (!matches.length || matches.length > 5) { suggest.className = 'suggestions hidden'; return; }
+    suggest.className = 'suggestions';
+    var label = document.createElement('div');
+    label.className = 'field-label'; label.textContent = 'Complete keyword'; suggest.appendChild(label);
+    for (var j = 0; j < matches.length; j++) makeChip(matches[j], suggest, fragment);
+  }
+  editor.oninput = editChanged;
+  editor.onclick = showSuggestions;
+  editor.onkeyup = showSuggestions;
+  editor.onscroll = function () { overlay.scrollTop = editor.scrollTop; overlay.scrollLeft = editor.scrollLeft; };
+  editor.onkeydown = function (e) {
+    e = e || window.event;
+    if (e.keyCode === 9) { // Tab inserts spaces on desktop; no IDE behavior.
+      if (e.preventDefault) e.preventDefault(); else e.returnValue = false;
+      var a = editor.selectionStart, b = editor.selectionEnd;
+      editor.value = editor.value.slice(0, a) + '  ' + editor.value.slice(b);
+      editor.selectionStart = editor.selectionEnd = a + 2;
+      editChanged();
+    }
+  };
+  title.oninput = function () {
+    current().title = title.value;
+    current().updated = new Date().getTime();
+    refreshSelect();
+    scheduleSave();
+  };
+  select.onchange = function () { saveNow(); data.active = select.value; render(); saveNow(); };
+  el('newNote').onclick = function () {
+    saveNow();
+    var note = freshNote();
+    data.notes.push(note); data.active = note.id;
+    render(); saveNow(); title.focus(); title.select();
+  };
+  el('deleteNote').onclick = function () {
+    if (!window.confirm('Delete this local draft? Export it first if you need a copy.')) return;
+    var removed = current().id, kept = [];
+    for (var i = 0; i < data.notes.length; i++) if (data.notes[i].id !== removed) kept.push(data.notes[i]);
+    if (!kept.length) kept.push(freshNote());
+    data.notes = kept; data.active = kept[0].id;
+    render(); saveNow();
+  };
+  el('exampleNote').onclick = function () {
+    if (editor.value.replace(/\s/g, '').length && !window.confirm('Replace this note with the example?')) return;
+    editor.value = 'START\nREAD n\nSET sum = 0\nFOR i FROM 1 TO n\n  READ value\n  SET sum = sum + value\nEND FOR\nPRINT sum\nSTOP';
+    if (!title.value || title.value === 'Untitled algorithm') { title.value = 'Sum of N values'; current().title = title.value; }
+    editChanged(); refreshSelect(); editor.focus();
+  };
+  function fileName(s) {
+    var name = (s || 'untitled-algorithm').toLowerCase().replace(/[^a-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
+    return (name || 'untitled-algorithm') + '.txt';
+  }
+  el('exportNote').onclick = function () {
+    saveNow();
+    var text = editor.value;
+    try {
+      var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      var url = (window.URL || window.webkitURL).createObjectURL(blob);
+      var anchor = document.createElement('a');
+      if (!('download' in anchor)) {
+        (window.URL || window.webkitURL).revokeObjectURL(url);
+        window.prompt('Your browser cannot download this file. Copy your pseudocode:', text);
+        return;
+      }
+      anchor.href = url; anchor.download = fileName(title.value);
+      document.body.appendChild(anchor); anchor.click(); document.body.removeChild(anchor);
+      window.setTimeout(function () { (window.URL || window.webkitURL).revokeObjectURL(url); }, 15000);
+      statusText('Export requested', false);
+    } catch (e) {
+      window.prompt('Download unavailable here. Copy your pseudocode:', text);
+    }
+  };
+  el('importNote').onclick = function () { el('fileInput').click(); };
+  el('fileInput').onchange = function () {
+    var input = this;
+    if (!input.files || !input.files[0]) return;
+    var file = input.files[0];
+    if (file.size > 1024 * 1024) { window.alert('Choose a text file smaller than 1 MB.'); input.value = ''; return; }
+    var reader = new FileReader();
+    reader.onload = function () {
+      var value = String(reader.result || '');
+      if (editor.value.replace(/\s/g, '').length && !window.confirm('Import as a new note? Your existing note stays saved.')) { input.value = ''; return; }
+      var n = freshNote();
+      n.title = file.name.replace(/\.txt$/i, '') || 'Imported note';
+      n.body = value;
+      data.notes.push(n); data.active = n.id;
+      render(); saveNow(); input.value = '';
+    };
+    reader.onerror = function () { window.alert('Could not read that text file.'); input.value = ''; };
+    reader.readAsText(file);
+  };
+  function tab(name) {
+    var a = document.querySelectorAll('.tab');
+    for (var i = 0; i < a.length; i++) {
+      var on = a[i].getAttribute('data-target') === name;
+      a[i].className = 'tab' + (on ? ' active' : '');
+      a[i].setAttribute('aria-selected', on ? 'true' : 'false');
+    }
+    el('notebook').className = 'content' + (name === 'notebook' ? '' : ' hidden');
+    el('reference').className = 'content' + (name === 'reference' ? '' : ' hidden');
+    window.scrollTo(0, 0);
+  }
+  var tabs = document.querySelectorAll('.tab');
+  for (var j = 0; j < tabs.length; j++) tabs[j].onclick = function () { tab(this.getAttribute('data-target')); };
+  el('backToNotebook').onclick = function () { tab('notebook'); };
+  // The transparent textarea overlay requires caret-color support. Other browsers
+  // simply show a normal editable textarea, retaining the full notebook function.
+  try {
+    if (window.CSS && window.CSS.supports && window.CSS.supports('caret-color', '#000000')) shell.className += ' enhanced';
+  } catch (e) {}
+  render(); saveNow();
+  if (window.addEventListener) {
+    window.addEventListener('pagehide', saveNow);
+    document.addEventListener('visibilitychange', function () { if (document.hidden) saveNow(); });
+  }
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+    navigator.serviceWorker.register('./sw.js').then(function () {
+      el('offlineStatus').textContent = 'Offline mode enabled after first online visit. Notes still stay on this device.';
+    }, function () { /* The HTML page still works when downloaded. */ });
+  }
+})();
+</script>
+</body>
+</html>
