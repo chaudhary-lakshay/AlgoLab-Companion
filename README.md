@@ -1,6 +1,14 @@
 # AlgoLab Companion — Field Notes
 
-A lightweight pseudocode notebook and flowchart reference for AlgoLab, designed for PC browsers and the Lenovo Android 5.1 tablet. Inspired by the Pathways Case File aesthetic.
+A responsive pseudocode notebook and flowchart reference for AlgoLab, designed for desktop, phones and the Lenovo Android 5.1 tablet. Inspired by the Pathways Case File aesthetic.
+
+## Responsive layouts
+
+- **PC (1180px+)**: three-pane workspace with a searchable draft index, large editor and always-visible flowchart/keyword reference.
+- **Tablet**: the original full-width editor with separate notebook/reference tabs.
+- **Phone**: compact layout with touch-friendly inputs, swipeable keyword chips and two-column export/import actions.
+
+All layouts share one URL and preserve the existing `algolab-companion-drafts-v1` local-storage format so updating the website does not erase drafts. Ctrl+S / Cmd+S saves from the editor or title field.
 
 ## Features
 
