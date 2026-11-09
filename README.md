@@ -4,7 +4,7 @@ A responsive pseudocode notebook and flowchart reference for AlgoLab, designed f
 
 ## Responsive layouts
 
-- **PC (1180px+)**: searchable draft index on the left, full pseudocode editor in the center, sticky quick-insert and export/import tools on the right. Flowchart and keyword reference opens in its own tab.
+- **PC (1180px+)**: full-width editor-first workbench with a compact dark masthead, searchable case files on the left, an enlarged editor, and searchable writing tools on the right. Optional Focus button hides both sidebars.
 - **Tablet**: full-width editor with separate notebook/reference tabs and a floating Quick tools drawer; no need to scroll to the editor bottom for actions.
 - **Phone**: compact layout with touch-friendly inputs and a floating Quick tools drawer containing keyword chips and export/import actions.
 
