@@ -8,7 +8,7 @@ The notebook retains a light paper-style editor with line numbers, distinct colo
 
 ## Responsive layouts
 
-- **PC (1180px+)**: full-width editor-first workbench with a compact dark masthead, searchable case files on the left, an enlarged editor, and searchable writing tools on the right. Optional Focus button hides both sidebars.
+- **PC (1180px+)**: full-width editor-first workbench with a compact case-file navigation strip (no bulky masthead), searchable case files on the left, an enlarged light editor, and writing tools on the right. The outer desktop page does not scroll; side panels and the editor scroll independently. Optional Focus button hides both sidebars.
 - **Tablet**: full-width editor with separate notebook/reference tabs and a floating Quick tools drawer; no need to scroll to the editor bottom for actions.
 - **Phone**: compact layout with touch-friendly inputs and a floating Quick tools drawer containing keyword chips and export/import actions.
 
