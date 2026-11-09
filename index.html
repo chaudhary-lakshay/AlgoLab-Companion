@@ -997,7 +997,8 @@ STOP</pre>
     var name = (s || 'untitled-algorithm').toLowerCase().replace(/[^a-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
     return (name || 'untitled-algorithm') + '.txt';
   }
-  el('exportNote').onclick = function () {    saveNow();
+  el('exportNote').onclick = function () {
+    saveNow();
     var text = editor.value;
     try {
       var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
