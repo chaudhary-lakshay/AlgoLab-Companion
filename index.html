@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
-  <meta name="theme-color" content="#efeadd">
+  <meta name="theme-color" content="#303a34">
   <meta name="description" content="Offline pseudocode field notes and a flowchart cheat sheet for AlgoLab.">
   <title>AlgoLab Companion — Field Notes</title>
   <style>
@@ -362,6 +362,51 @@
       #noteTitle { height: 40px; }
       .editor-shell { min-height: 230px; }
     }
+
+    /* Editor v4: dark, code-editor writing surface inside the case-file shell. */
+    .editor-topbar { display: -webkit-box; display: -ms-flexbox; display: flex; align-items: stretch; min-height: 39px; overflow: hidden; margin: 0; background: #242731; border: 1px solid #3f414b; border-bottom: 0; }
+    .editor-tabs { display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-flex: 1; -ms-flex: 1; flex: 1; min-width: 0; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: #686775 #242731; }
+    .file-tab { flex: 0 0 auto; max-width: 195px; min-width: 112px; min-height: 39px; padding: 0 13px; border: 0; border-right: 1px solid #3d4049; border-top: 2px solid transparent; border-radius: 0; background: #272a33; color: #adb3c0; text-align: left; font: 12px/36px Consolas, 'Courier New', monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .file-tab.is-active { background: #15171d; border-top-color: #d88367; color: #f0ede8; }
+    .file-tab:hover { background: #363b46; color: #f6f6f7; }
+    .file-new { flex: 0 0 40px; min-height: 39px; background: #282d36; color: #c6cbd4; font: 21px/1 monospace; border: 0; border-right: 1px solid #3e424d; }
+    .file-new:hover { color: #fff; background: #3a4050; }
+    .editor-language { flex: 0 0 auto; display: none; align-items: center; padding: 0 14px; font: 10px 'Courier New', monospace; color: #929bab; letter-spacing: 1.1px; }
+    .editor-shell { margin-top: 0; border: 1px solid #393c46; background: #15171e; color: #d9deea; box-shadow: none; }
+    .editor-shell:before { display: none; }
+    .editor-shell:focus-within { border-color: #647a9c; box-shadow: 0 0 0 1px rgba(100,122,156,.24); }
+    #editor, #highlight { left: 54px; top: 0; width: calc(100% - 54px); height: 100%; padding: 19px 20px; font: 16px/27px Consolas, 'Cascadia Code', 'Courier New', monospace; color: #d8ddeb; white-space: pre; word-break: normal; word-wrap: normal; overflow-wrap: normal; tab-size: 2; -moz-tab-size: 2; }
+    #editor { background: transparent; color: #d8ddeb; caret-color: #ffdb9e; }
+    #editor::placeholder { color: #717a89; }
+    .enhanced #editor { color: transparent; -webkit-text-fill-color: transparent; caret-color: #ffdb9e; }
+    .enhanced #highlight { color: #d8ddeb; }
+    .tok-key { font-weight: 500; color: #8cc7ff; }
+    .tok-num { color: #c6a7ef; }
+    .tok-comment { color: #829383; font-style: italic; }
+    .tok-string { color: #e1b48c; }
+    .tok-op { color: #e1b5db; }
+    .editor-gutter { display: block; position: absolute; left: 0; top: 0; bottom: 0; z-index: 1; width: 53px; margin: 0; overflow: hidden; padding: 19px 12px 19px 2px; border-right: 1px solid #292e39; background: #1b1e27; color: #6d7586; font: 16px/27px Consolas, 'Cascadia Code', 'Courier New', monospace; text-align: right; white-space: pre; pointer-events: none; user-select: none; }
+    .editor-footer { margin: 0; padding: 7px 12px; background: #252936; color: #b7c3d2; border: 1px solid #393c46; border-top: 0; font: 11px/1.5 Consolas, 'Courier New', monospace; }
+    .editor-footer #lineCount { color: #c9d7e9; }
+    .editor-footer .edit-mode { color: #94b8d5; }
+    .editor-footer > span:last-child { text-align: right; }
+    .editor-topbar button:focus-visible { outline: 2px solid #edb899; outline-offset: -2px; }
+    @media (min-width: 1180px) {
+      .editor-language { display: -webkit-box; display: -ms-flexbox; display: flex; }
+      #notebook .editor-topbar { flex: 0 0 auto; margin-top: 3px; }
+      #notebook .editor-footer { flex: 0 0 auto; padding: 7px 15px; }
+      #notebook .editor-shell { border-radius: 0; min-height: 200px; background: #15171e; }
+      #notebook #editor, #notebook #highlight { padding: 20px 20px; font: 17px/28px Consolas, 'Cascadia Code', 'Courier New', monospace; }
+      #notebook .editor-gutter { padding-top: 20px; font: 17px/28px Consolas, 'Cascadia Code', 'Courier New', monospace; }
+    }
+    @media (max-width: 599px) {
+      .editor-topbar { min-height: 40px; }
+      .file-tab { min-width: 100px; max-width: 155px; font-size: 11px; }
+      #editor, #highlight { left: 42px; width: calc(100% - 42px); padding: 14px 12px; font: 14px/24px Consolas, 'Courier New', monospace; }
+      .editor-gutter { width: 41px; padding: 14px 7px 14px 0; font: 13px/24px Consolas, 'Courier New', monospace; }
+      .editor-footer { font-size: 10px; }
+      .editor-footer .edit-mode { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -409,11 +454,17 @@
         <span><span class="desktop-shortcut">CTRL+S TO SAVE &nbsp; · &nbsp; </span><span id="saveStatus" class="status" aria-live="polite">Stored on this device</span></span>
         <button type="button" id="focusModeButton" class="focus-toggle" aria-pressed="false" title="Hide side panels to concentrate on writing">▣ Focus</button>
       </div>
+      <div class="editor-topbar" aria-label="Pseudocode file tabs">
+        <div id="editorTabs" class="editor-tabs" role="tablist" aria-label="Saved pseudocode drafts"></div>
+        <button type="button" id="newFileTab" class="file-new" aria-label="New pseudocode draft" title="New draft">+</button>
+        <span class="editor-language">ALGO.PSEUDO</span>
+      </div>
       <div id="editorShell" class="editor-shell">
+        <pre id="lineNumbers" class="editor-gutter" aria-hidden="true">1</pre>
         <pre id="highlight" aria-hidden="true"></pre>
         <textarea id="editor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Pseudocode editor" placeholder="Write the steps in plain language.&#10;&#10;START&#10;READ n&#10;SET total = 0&#10;..."></textarea>
       </div>
-      <div class="line-note"><span id="lineCount">1 line</span><span>Plain text, not executable code</span></div>
+      <div class="line-note editor-footer"><span id="lineCount">Ln 1, Col 1 · 1 line</span><span class="edit-mode">TAB: 2 SPACES &nbsp; · &nbsp; AUTO-INDENT &nbsp; · &nbsp; PSEUDOCODE</span></div>
       <div id="suggestions" class="suggestions hidden" aria-live="polite"></div>
     </section>
 
@@ -556,7 +607,9 @@ STOP</pre>
   }
   // Longest matches first so END FUNCTION is not split into END + FUNCTION.
   var sortedWords = words.slice().sort(function (a, b) { return b.length - a.length; });
-  var keywordPattern = new RegExp('(//[^\\n]*)|\\b(' + sortedWords.join('|').replace(/ /g, '[ \\t]+') + ')\\b|\\b([0-9]+)\\b', 'gi');
+  var keywordPattern = new RegExp('(//[^\\n]*)|(\"(?:\\\\.|[^\"\\\\])*\")|\\b(' + sortedWords.join('|').replace(/ /g, '[ \\t]+') + ')\\b|\\b([0-9]+)\\b|([<>]=?|==|!=|[+*/=-])', 'gi');
+  var editorTabs = document.getElementById('editorTabs');
+  var lineNumbers = document.getElementById('lineNumbers');
   var editor = document.getElementById('editor');
   var overlay = document.getElementById('highlight');
   var shell = document.getElementById('editorShell');
@@ -655,8 +708,41 @@ STOP</pre>
     }
   }
   function lineCount() {
-    var n = editor.value.split('\n').length;
-    el('lineCount').textContent = n + (n === 1 ? ' line' : ' lines');
+    var count = editor.value.split('\n').length;
+    var pos = typeof editor.selectionStart === 'number' ? editor.selectionStart : 0;
+    var before = editor.value.slice(0, pos);
+    var ln = before.split('\n').length;
+    var col = pos - before.lastIndexOf('\n');
+    el('lineCount').textContent = 'Ln ' + ln + ', Col ' + col + '  /  ' + count + (count === 1 ? ' line' : ' lines');
+    var nums = [];
+    for (var i = 1; i <= count; i++) nums.push(i);
+    lineNumbers.textContent = nums.join('\n');
+    lineNumbers.scrollTop = editor.scrollTop;
+  }
+  function renderTabs() {
+    while (editorTabs.firstChild) editorTabs.removeChild(editorTabs.firstChild);
+    var ordered = data.notes.slice().sort(function (a, b) { return b.updated - a.updated; });
+    var currentId = current().id;
+    var limited = ordered.slice(0, 12);
+    var hasCurrent = false;
+    for (var k = 0; k < limited.length; k++) if (limited[k].id === currentId) hasCurrent = true;
+    if (!hasCurrent) limited.push(current());
+    for (var i = 0; i < limited.length; i++) {
+      var note = limited[i];
+      var active = note.id === currentId;
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'file-tab' + (active ? ' is-active' : '');
+      b.setAttribute('role', 'tab');
+      b.setAttribute('aria-selected', active ? 'true' : 'false');
+      b.title = note.title + '.pseudo';
+      b.textContent = (note.title || 'Untitled algorithm') + '.pseudo';
+      b.onclick = (function (id) { return function () {
+        if (id === data.active) { editor.focus(); return; }
+        saveNow(); data.active = id; tab('notebook'); render(); saveNow(); editor.focus();
+      }; })(note.id);
+      editorTabs.appendChild(b);
+    }
   }
   function render() {
     var n = current();
@@ -664,6 +750,7 @@ STOP</pre>
     editor.value = n.body;
     refreshSelect();
     renderLibrary();
+    renderTabs();
     syncHighlight();
     lineCount();
     showSuggestions();
@@ -677,7 +764,7 @@ STOP</pre>
     var match;
     while ((match = pattern.exec(s)) !== null) {
       output += escapeHtml(s.slice(last, match.index));
-      output += '<span class="' + (match[1] ? 'tok-comment' : match[2] ? 'tok-key' : 'tok-num') + '">' + escapeHtml(match[0]) + '</span>';
+      output += '<span class="' + (match[1] ? 'tok-comment' : match[2] ? 'tok-string' : match[3] ? 'tok-key' : match[4] ? 'tok-num' : 'tok-op') + '">' + escapeHtml(match[0]) + '</span>';
       last = match.index + match[0].length;
     }
     output += escapeHtml(s.slice(last));
@@ -689,6 +776,7 @@ STOP</pre>
     overlay.innerHTML = colorize(editor.value);
     overlay.scrollTop = editor.scrollTop;
     overlay.scrollLeft = editor.scrollLeft;
+    lineNumbers.scrollTop = editor.scrollTop;
   }
   function editChanged() {
     var n = current();
@@ -798,21 +886,72 @@ STOP</pre>
     for (var j = 0; j < matches.length; j++) makeChip(matches[j], suggest, fragment);
   }
   editor.oninput = editChanged;
-  editor.onclick = showSuggestions;
-  editor.onkeyup = showSuggestions;
-  editor.onscroll = function () { overlay.scrollTop = editor.scrollTop; overlay.scrollLeft = editor.scrollLeft; };
+  editor.onclick = function () { showSuggestions(); lineCount(); };
+  editor.onkeyup = function () { showSuggestions(); lineCount(); };
+  editor.onselect = lineCount;
+  editor.onscroll = function () { overlay.scrollTop = editor.scrollTop; overlay.scrollLeft = editor.scrollLeft; lineNumbers.scrollTop = editor.scrollTop; };
+  function replaceEditorRange(start, end, text, caretStart, caretEnd) {
+    var keepScroll = editor.scrollTop;
+    editor.value = editor.value.slice(0, start) + text + editor.value.slice(end);
+    editor.focus();
+    try { editor.setSelectionRange(caretStart, typeof caretEnd === 'number' ? caretEnd : caretStart); } catch (err) {}
+    editor.scrollTop = keepScroll;
+    editChanged();
+  }
+  function indentSelection(outdent) {
+    var text = editor.value;
+    var start = editor.selectionStart, end = editor.selectionEnd;
+    var lineStart = text.lastIndexOf('\n', start - 1) + 1;
+    // A selection ending at the next line's start should not indent that extra line.
+    var selectionEnd = end > start && text.charAt(end - 1) === '\n' ? end - 1 : end;
+    var lineEndIndex = text.indexOf('\n', selectionEnd);
+    var lineEnd = lineEndIndex < 0 ? text.length : lineEndIndex;
+    var original = text.slice(lineStart, lineEnd);
+    var lines = original.split('\n');
+    var leftDelta = 0, rightDelta = 0;
+    for (var i = 0; i < lines.length; i++) {
+      if (outdent) {
+        var m = /^( {1,2}|\t)/.exec(lines[i]);
+        var removed = m ? m[0].length : 0;
+        lines[i] = lines[i].slice(removed);
+        if (i === 0) leftDelta -= Math.min(removed, start - lineStart);
+        rightDelta -= removed;
+      } else {
+        lines[i] = '  ' + lines[i];
+        if (i === 0) leftDelta += 2;
+        rightDelta += 2;
+      }
+    }
+    var result = lines.join('\n');
+    var nextStart = Math.max(lineStart, start + leftDelta);
+    var nextEnd = Math.max(nextStart, end + rightDelta);
+    replaceEditorRange(lineStart, lineEnd, result, nextStart, nextEnd);
+  }
   editor.onkeydown = function (e) {
     e = e || window.event;
     if ((e.ctrlKey || e.metaKey) && e.keyCode === 83) {
       if (e.preventDefault) e.preventDefault(); else e.returnValue = false;
       saveNow(); return;
     }
-    if (e.keyCode === 9) { // Tab inserts spaces on desktop; no IDE behavior.
+    if (e.keyCode === 9) { // Tab / Shift+Tab indent just like a code editor.
       if (e.preventDefault) e.preventDefault(); else e.returnValue = false;
       var a = editor.selectionStart, b = editor.selectionEnd;
-      editor.value = editor.value.slice(0, a) + '  ' + editor.value.slice(b);
-      editor.selectionStart = editor.selectionEnd = a + 2;
-      editChanged();
+      if (a !== b || e.shiftKey) {
+        indentSelection(!!e.shiftKey);
+      } else {
+        replaceEditorRange(a, b, '  ', a + 2);
+      }
+      return;
+    }
+    if (e.keyCode === 13 && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      if (e.preventDefault) e.preventDefault(); else e.returnValue = false;
+      var start = editor.selectionStart, end = editor.selectionEnd;
+      var before = editor.value.slice(editor.value.lastIndexOf('\n', start - 1) + 1, start);
+      var match = /^[ \t]*/.exec(before);
+      var indent = match ? match[0].replace(/\t/g, '  ') : '';
+      if (/^\s*(?:IF\b.*\bTHEN\s*|ELSE(?:\s+IF\b.*\bTHEN)?\s*|FOR\b.*|WHILE\b.*|REPEAT\b.*|FUNCTION\b.*|PROCEDURE\b.*|DO\s*)$/i.test(before)) indent += '  ';
+      replaceEditorRange(start, end, '\n' + indent, start + indent.length + 1);
+      return;
     }
   };
   title.onkeydown = function (e) {
@@ -827,9 +966,11 @@ STOP</pre>
     refreshSelect();
     scheduleSave();
     renderLibrary();
+    renderTabs();
   };
   select.onchange = function () { saveNow(); data.active = select.value; render(); saveNow(); };
   searchBox.oninput = renderLibrary;
+  el('newFileTab').onclick = function () { el('newNote').click(); };
   el('newNoteDesktop').onclick = function () { el('newNote').click(); };
   el('newNote').onclick = function () {
     saveNow();
@@ -856,8 +997,7 @@ STOP</pre>
     var name = (s || 'untitled-algorithm').toLowerCase().replace(/[^a-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
     return (name || 'untitled-algorithm') + '.txt';
   }
-  el('exportNote').onclick = function () {
-    saveNow();
+  el('exportNote').onclick = function () {    saveNow();
     var text = editor.value;
     try {
       var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
