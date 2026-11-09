@@ -13,7 +13,7 @@ All layouts share one URL and preserve the existing `algolab-companion-drafts-v1
 ## Features
 
 - Plain-text pseudocode editor with keyword coloring in supported browsers and fallback on older ones
-- Keyword suggestion and quick-insert buttons
+- Searchable library of 53 pseudocode keywords and DSA operations, grouped by basics, conditions, loops, functions, and data structures; keyword suggestions and quick-insert buttons
 - Flowchart symbol and pseudocode reference
 - Multiple named drafts stored locally in each browser
 - Export and import text files to transfer notes
