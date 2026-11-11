@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>AlgoLab Companion — Pseudocode Preview</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #fffdfa; color: #29312f; }
+  body { font: 16px/27px Consolas, 'Cascadia Code', 'Courier New', monospace; }
+  .wrap { overflow: hidden; border: 1px solid #c5bcaf; background: #fffdfa; }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 5px 12px; color: #686e67; font: 11px/1.5 Consolas, 'Courier New', monospace; background: #f1ede5; border-bottom: 1px solid #c5bcaf; }
+  .bar strong { color: #913e34; letter-spacing: .6px; }
+  .listing { display: grid; grid-template-columns: 53px minmax(0,1fr); overflow: auto; }
+  .lines { margin: 0; padding: 17px 12px 17px 2px; background: #f4f0e8; border-right: 1px solid #e0d8cd; text-align: right; white-space: pre; user-select: none; color: #9b9185; }
+  .code { margin: 0; padding: 17px 20px; white-space: pre; tab-size: 2; overflow: visible; }
+  .tok-key { font-weight: bold; color: #913e34; }
+  .tok-io { font-weight: bold; color: #225f9b; }
+  .tok-output { font-weight: bold; color: #16704b; }
+  .tok-assign { font-weight: bold; color: #a45123; }
+  .tok-branch { font-weight: bold; color: #784298; }
+  .tok-loop { font-weight: bold; color: #0f7377; }
+  .tok-fn { font-weight: bold; color: #a03c4b; }
+  .tok-structure { font-weight: bold; color: #576b34; }
+  .tok-num { color: #8a4b9e; }
+  .tok-comment { color: #787c71; font-style: italic; }
+  .tok-string { color: #197443; }
+  .tok-op { color: #7a5966; }
+  @media (max-width: 580px) { html, body { font-size: 14px; line-height: 24px; } .listing { grid-template-columns: 39px minmax(0,1fr); } .lines { padding: 14px 7px 14px 2px; } .code { padding: 14px 12px; } }
+</style>
+</head>
+<body>
+<div class="wrap" aria-label="Highlighted pseudocode">
+  <div class="bar"><strong>ALGOLAB / PSEUDOCODE</strong><span id="count"></span></div>
+  <div class="listing">
+    <pre id="lines" class="lines" aria-hidden="true"></pre>
+    <pre id="code" class="code"></pre>
+  </div>
+</div>
+<script>
+(function () {
+  'use strict';
+  // This is the same keyword grouping, tokenization and palette as AlgoLab Companion.
+  var keywordGroups = {
+    core: ['START','END','STOP','READ','INPUT','SET','PRINT','DISPLAY','OUTPUT','RETURN'],
+    conditions: ['IF','THEN','ELSE IF','ELSE','END IF','AND','OR','NOT','TRUE','FALSE'],
+    loops: ['FOR','FROM','TO','STEP','END FOR','WHILE','DO','END WHILE','REPEAT','UNTIL','BREAK','CONTINUE'],
+    functions: ['FUNCTION','END FUNCTION','PROCEDURE','END PROCEDURE','CALL','RETURN'],
+    structures: ['ARRAY','LIST','STACK','QUEUE','PUSH','POP','PEEK','ENQUEUE','DEQUEUE','INSERT','DELETE','SWAP','LENGTH','SIZE','INDEX','VISIT']
+  };
+  var words = [];
+  Object.keys(keywordGroups).forEach(function (key) {
+    keywordGroups[key].forEach(function (word) { if (words.indexOf(word) < 0) words.push(word); });
+  });
+  var sortedWords = words.slice().sort(function (a,b) { return b.length - a.length; });
+  var keywordPattern = new RegExp('(//[^\\n]*)|("(?:\\\\.|[^"\\\\])*")|\\b(' + sortedWords.join('|').replace(/ /g, '[ \\t]+') + ')\\b|\\b([0-9]+)\\b|([<>]=?|==|!=|[+*/=-])', 'gi');
+  function escapeHtml(value) { return value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function keywordTone(word) {
+    var token = word.toUpperCase().replace(/[ \t]+/g, ' ');
+    if (/^(READ|INPUT)$/.test(token)) return 'tok-io';
+    if (/^(PRINT|DISPLAY|OUTPUT)$/.test(token)) return 'tok-output';
+    if (/^(SET|SWAP)$/.test(token)) return 'tok-assign';
+    if (/^(IF|ELSE IF|ELSE|END IF|THEN|AND|OR|NOT|TRUE|FALSE)$/.test(token)) return 'tok-branch';
+    if (/^(FOR|FROM|TO|STEP|END FOR|WHILE|DO|END WHILE|REPEAT|UNTIL|BREAK|CONTINUE)$/.test(token)) return 'tok-loop';
+    if (/^(FUNCTION|END FUNCTION|PROCEDURE|END PROCEDURE|CALL|RETURN)$/.test(token)) return 'tok-fn';
+    if (/^(ARRAY|LIST|STACK|QUEUE|PUSH|POP|PEEK|ENQUEUE|DEQUEUE|INSERT|DELETE|LENGTH|SIZE|INDEX|VISIT)$/.test(token)) return 'tok-structure';
+    return 'tok-key';
+  }
+  function colorize(s) {
+    var output='', last=0, match;
+    keywordPattern.lastIndex=0;
+    while ((match=keywordPattern.exec(s))!==null) {
+      output += escapeHtml(s.slice(last,match.index));
+      var cls=match[1]?'tok-comment':match[2]?'tok-string':match[3]?keywordTone(match[3]):match[4]?'tok-num':'tok-op';
+      output += '<span class="'+cls+'">'+escapeHtml(match[0])+'</span>';
+      last=match.index+match[0].length;
+    }
+    return output+escapeHtml(s.slice(last));
+  }
+  var fallback='START\nINPUT n\nFOR i FROM 1 TO n\n  FOR j FROM 1 TO n\n    PRINT "*"\n  END FOR\n  PRINT NEWLINE\nEND FOR\nEND';
+  var params=new URLSearchParams(window.location.search);
+  var src=params.get('code');
+  var code=(src===null?fallback:src).slice(0,12000);
+  // URLSearchParams returns decoded text; never interpret pseudocode as HTML.
+  var lines=code.split('\n');
+  document.getElementById('code').innerHTML=colorize(code);
+  document.getElementById('lines').textContent=lines.map(function (_,i) { return i+1; }).join('\n');
+  document.getElementById('count').textContent=lines.length+' lines';
+}());
+</script>
+</body>
+</html>
